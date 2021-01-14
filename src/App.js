@@ -33,14 +33,16 @@ class App extends Component {
           i++
         }
 
-        if(count<0) {
-          this.setState({sortRunning: false})
-          clearInterval(started)
-        }
-
         this.setState({list: array, pointer: i, sortRunning: true})
+
+        if(count<0) {
+          clearInterval(started)
+          this.setState({sortRunning: false})
+        }
       }, 50)
     }
+
+    
   }
 
 
