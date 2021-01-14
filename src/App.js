@@ -1,11 +1,25 @@
+import {React, Component } from 'react';
 import './App.scss';
+import Graph from './components/graph/graph.component'
 
-function App() {
-  return (
-    <div className="App">
-      <h1>SORTING APP</h1>
-    </div>
-  );
+class App extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+        list: [5, 3]
+    }
+  }
+
+  render() {
+
+    return (
+      <div className="App">
+        <h1 className="title">SORTING APP</h1>
+        <Graph list={this.state.list} />
+      </div>
+    )
+  }
 }
 
 export default App;
