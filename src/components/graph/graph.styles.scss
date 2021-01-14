@@ -1,11 +1,21 @@
 .graph {
-    border: 1px solid red;
+    margin-top: 10rem;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
+    border-bottom: 3px solid black;
+    width: auto;
 
     .column {
         display: flex;
         flex-direction: column;
+
+        .block {
+            list-style: none;
+            height: 30px;
+            width: 30px;
+            border: 1px solid black;
+            background: blue;
+        }
     }
 }

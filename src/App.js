@@ -7,7 +7,7 @@ class App extends Component {
     super(props)
 
     this.state = {
-        list: [5, 3]
+        list: [5, 3, 6, 7, 3, 2]
     }
   }
 

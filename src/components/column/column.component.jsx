@@ -2,15 +2,16 @@ import React from 'react'
 import './column.styles.scss'
 
 const Column = ({number}) => {
-
-    let blocks = new Array(number).fill(1)
-
-    console.log(blocks)
+    let count = new Array(number).fill(0)
 
     return (
-        <div className="column" >
-            {blocks}
-        </div>
+        <ul className="column">
+            {
+                count.map(item => {
+                    return <li className="block"></li>
+                })
+            }
+        </ul>
     )
 }
 
