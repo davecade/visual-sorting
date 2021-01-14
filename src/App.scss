@@ -10,4 +10,22 @@
   .title {
     margin: 2rem 0;
   }
+
+  .sort-button {
+    margin-top: 1rem;
+    padding: .8rem 1.5rem;
+    outline: none;
+    border: none;
+    color: white;
+    border: 1px solid greenyellow;
+    background-color: green;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    &:active {
+      transform: scale(.98);
+    }
+  }
 }
