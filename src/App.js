@@ -20,7 +20,7 @@ class App extends Component {
   }
 
   bubbleSort = () => {
-    sound.lose.play()
+    sound.sorting.play()
     if(!this.state.sortRunning) {
       let array = this.state.list
       let count = array.length-1
@@ -53,6 +53,8 @@ class App extends Component {
 
         if(count===0 || (finished===true && i===0)) {
           console.log("CLEARED")
+          sound.sorting.pause()
+          sound.finished.play()
           clearInterval(started)
           this.setState({sortRunning: false})
         }
@@ -62,7 +64,7 @@ class App extends Component {
   }
 
   insertionSort = () => {
-    sound.lose.play()
+    sound.sorting.play()
     if(!this.state.sortRunning) {
       let array = this.state.list
       let i = 0
@@ -93,6 +95,8 @@ class App extends Component {
 
         if(array.length===1 || i===array.length) {
           console.log("CLEARED")
+          sound.sorting.pause()
+          sound.finished.play()
           clearInterval(started)
           this.setState({sortRunning: false})
         }
