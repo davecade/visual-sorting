@@ -1,6 +1,7 @@
 import {React, Component } from 'react';
 import './App.scss';
 import Graph from './components/graph/graph.component'
+import { sound } from './data/sound'
 
 class App extends Component {
   constructor(props) {
@@ -19,11 +20,13 @@ class App extends Component {
   }
 
   bubbleSort = () => {
+    sound.lose.play()
     if(!this.state.sortRunning) {
       let array = this.state.list
       let count = array.length-1
       let i = 0;
       let finished
+      
       
       let started = setInterval(()=> {
         
@@ -59,12 +62,13 @@ class App extends Component {
   }
 
   insertionSort = () => {
+    sound.lose.play()
     if(!this.state.sortRunning) {
       let array = this.state.list
       let i = 0
       let currentIdx = 0
       let timeToIterate = true
-
+      
       let started = setInterval(()=> {
 
         if(array.length>1) {
