@@ -50,12 +50,8 @@ class App extends Component {
           this.setState({sortRunning: false})
         }
 
-      }, 40)
-
-
+      }, 50)
     }
-
-    
   }
 
 

@@ -1,0 +1,11 @@
+.block {
+    list-style: none;
+    height: 30px;
+    width: 30px;
+    border: 1px solid black;
+    background: blue;
+}
+
+.block.pointing {
+    background: yellow
+}
