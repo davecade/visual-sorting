@@ -6,8 +6,9 @@ class App extends Component {
   constructor(props) {
     super(props)
     // [1, 5, 16, 6, 10, 15, 13, 7, 11, 14, 5, 4 ,9, 8, 6 ,4, 3, 3, 7]
+    // [1, 2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,20,19]
     this.state = {
-        list: [1,2,3,4,5,6,7,2,9,10],
+        list: [1, 5, 16, 6, 10, 15, 13, 7, 11, 14, 5, 4 ,9, 8, 6 ,4, 3, 3, 7],
         pointer: 0,
         sortRunning: false
     }
@@ -17,10 +18,15 @@ class App extends Component {
     if(!this.state.sortRunning) {
       let array = this.state.list
       let count = array.length-1
-      let i = this.state.pointer;
-      let finished = true
+      let i = 0;
+      let finished
       
       let started = setInterval(()=> {
+        
+        if(i===0) {
+          finished = true
+        }
+          
         if(array[i]>array[i+1]) {
             let temp = array[i]
             array[i] = array[i+1]
@@ -28,7 +34,7 @@ class App extends Component {
             finished = false;
         }
 
-        if(i===count) {
+        if(i===count-1) {
           i=0;
           count--;
         } else {
@@ -37,11 +43,16 @@ class App extends Component {
 
         this.setState({list: array, pointer: i, sortRunning: true})
 
-        if(count<0 || (finished===true && i===count)) {
+
+        if(count===0 || (finished===true && i===0)) {
+          console.log("CLEARED")
           clearInterval(started)
           this.setState({sortRunning: false})
         }
-      }, 50)
+
+      }, 40)
+
+
     }
 
     
