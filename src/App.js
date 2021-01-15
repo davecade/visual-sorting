@@ -8,7 +8,7 @@ class App extends Component {
     super(props)
 
     this.state = {
-        list: [1, 5, 16, 6, 10, 15, 13, 7, 11, 14, 5, 4 ,9, 8, 6 ,4, 3, 3, 7],
+        list: [16,12,13,4,5,9,2,7,11,3,18,20,19,5,7,8,1,3,6],
         pointer: 0,
         sortRunning: false
     }
@@ -54,6 +54,7 @@ class App extends Component {
         if(count===0 || (finished===true && i===0)) {
           console.log("CLEARED")
           sound.sorting.pause()
+          sound.sorting.currentTime = 0
           sound.finished.play()
           clearInterval(started)
           this.setState({sortRunning: false})
@@ -96,6 +97,7 @@ class App extends Component {
         if(array.length===1 || i===array.length) {
           console.log("CLEARED")
           sound.sorting.pause()
+          sound.sorting.currentTime = 0
           sound.finished.play()
           clearInterval(started)
           this.setState({sortRunning: false})
@@ -114,9 +116,9 @@ class App extends Component {
       <div className="App">
         <h1 className="title">SORTING APP</h1>
         <Graph list={this.state.list} pointer={this.state.pointer} sortRunning={this.state.sortRunning} />
-        <button className="sort-button bubble" onClick={this.bubbleSort}>BUBBLE SORT</button>
-        <button className="sort-button insertion" onClick={this.insertionSort}>INSERTION SORT</button>
-        <button className="sort-button reset" onClick={this.reset}>RESET</button>
+        <button className="button bubble" onClick={this.bubbleSort}>BUBBLE SORT</button>
+        <button className="button insertion" onClick={this.insertionSort}>INSERTION SORT</button>
+        <button className="button reset" onClick={this.reset}>RESET</button>
       </div>
     )
   }
