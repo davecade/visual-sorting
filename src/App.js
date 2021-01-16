@@ -20,8 +20,12 @@ class App extends Component {
   }
 
   bubbleSort = () => {
-    sound.sorting.play()
+
     if(!this.state.sortRunning) {
+      sound.finished.pause()
+      sound.finished.currentTime = 0
+      sound.sorting.play()
+
       let array = this.state.list
       let count = array.length-1
       let i = 0;
@@ -65,8 +69,12 @@ class App extends Component {
   }
 
   insertionSort = () => {
-    sound.sorting.play()
+
     if(!this.state.sortRunning) {
+      sound.finished.pause()
+      sound.finished.currentTime = 0
+      sound.sorting.play()
+
       let array = this.state.list
       let i = 0
       let currentIdx = 0
