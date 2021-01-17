@@ -79,9 +79,7 @@ class App extends Component {
   insertionSort = () => {
 
     if(!this.state.sortRunning) {
-      sound.finished.pause()
-      sound.finished.currentTime = 0
-      sound.sorting.play()
+      this.playSortingSound();
 
       let array = this.state.list
       let i = 0
@@ -112,9 +110,7 @@ class App extends Component {
 
         if(array.length===1 || i===array.length) {
           console.log("CLEARED")
-          sound.sorting.pause()
-          sound.sorting.currentTime = 0
-          sound.finished.play()
+          this.playFinishedSound();
           clearInterval(started)
           this.setState({sortRunning: false})
         }
