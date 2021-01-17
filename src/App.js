@@ -19,12 +19,22 @@ class App extends Component {
     this.setState({list: originalData})
   }
 
+  playSortingSound = () => {
+    sound.finished.pause()
+    sound.finished.currentTime = 0
+    sound.sorting.play()
+  }
+
+  playFinishedSound = () => {
+    sound.sorting.pause()
+    sound.sorting.currentTime = 0
+    sound.finished.play()
+  }
+
   bubbleSort = () => {
 
     if(!this.state.sortRunning) {
-      sound.finished.pause()
-      sound.finished.currentTime = 0
-      sound.sorting.play()
+      this.playSortingSound()
 
       let array = this.state.list
       let count = array.length-1
@@ -57,9 +67,7 @@ class App extends Component {
 
         if(count===0 || (finished===true && i===0)) {
           console.log("CLEARED")
-          sound.sorting.pause()
-          sound.sorting.currentTime = 0
-          sound.finished.play()
+          this.playFinishedSound()
           clearInterval(started)
           this.setState({sortRunning: false})
         }
