@@ -121,6 +121,64 @@ class App extends Component {
 
   }
 
+  selectionSort = () => {
+    if(!this.state.sortRunning) {
+      this.playSortingSound();
+
+      let array = this.state.list
+      let smallestNumIdx = 0;
+      let startingIdx = 0;
+      let currentIdx
+      let iterated = true;
+      let readyToSwap = false
+
+      let started = setInterval(()=> {
+        if(iterated===true) {
+          currentIdx = startingIdx
+          smallestNumIdx = startingIdx
+          iterated = false
+        }
+
+        if(currentIdx === startingIdx) {
+          this.setState({list: array, pointer: currentIdx, sortRunning: true})
+          currentIdx++
+        } else {
+          if(currentIdx < array.length) {
+          
+            if(array[currentIdx] < array[smallestNumIdx]) {
+              smallestNumIdx = currentIdx
+            }
+            this.setState({list: array, pointer: currentIdx, sortRunning: true})
+            currentIdx++;
+          } else {
+            
+            if(readyToSwap) {
+              let temp = array[startingIdx];
+              array[startingIdx] = array[smallestNumIdx];
+              array[smallestNumIdx] = temp;
+              startingIdx++;
+              iterated = true
+              this.setState({list: array, pointer: startingIdx-1, sortRunning: true})
+              readyToSwap = false
+            } else {
+              this.setState({list: array, pointer: smallestNumIdx, sortRunning: true})
+              readyToSwap = true
+            }
+            
+          }
+        }
+        
+        if(startingIdx===array.length) {
+          console.log("CLEARED")
+          this.playFinishedSound();
+          clearInterval(started)
+          this.setState({sortRunning: false})
+        }
+      }, 50)
+
+    }
+  }
+
 
   render() {
 
@@ -130,6 +188,7 @@ class App extends Component {
         <Graph list={this.state.list} pointer={this.state.pointer} sortRunning={this.state.sortRunning} />
         <button className="button bubble" onClick={this.bubbleSort}>BUBBLE SORT</button>
         <button className="button insertion" onClick={this.insertionSort}>INSERTION SORT</button>
+        <button className="button selection" onClick={this.selectionSort}>SELECTION SORT</button>
         <button className="button reset" onClick={this.reset}>RESET</button>
       </div>
     )
