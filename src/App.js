@@ -8,15 +8,19 @@ class App extends Component {
     super(props)
 
     this.state = {
-        list: [16,12,13,4,5,9,2,7,11,3,18,20,19,5,7,8,1,3,6],
+        list: [],
         pointer: 0,
         sortRunning: false
     }
   }
 
-  reset = () => {
-    let originalData = [1, 5, 16, 6, 10, 15, 13, 7, 11, 14, 5, 4 ,9, 8, 6 ,4, 3, 3, 7]
-    this.setState({list: originalData})
+  generateArray = () => {
+    let size = 25
+    let result = []
+    
+    for(let i= 0; i<size; i++) result.push(Math.floor(Math.random() * 20))
+
+    this.setState({list: result})
   }
 
   playSortingSound = () => {
@@ -131,52 +135,79 @@ class App extends Component {
       let currentIdx
       let iterated = true;
       let readyToSwap = false
+      let sorted = this.checkSorted()
 
-      let started = setInterval(()=> {
-        if(iterated===true) {
-          currentIdx = startingIdx
-          smallestNumIdx = startingIdx
-          iterated = false
-        }
-
-        if(currentIdx === startingIdx) {
-          this.setState({list: array, pointer: currentIdx, sortRunning: true})
-          currentIdx++
-        } else {
-          if(currentIdx < array.length) {
-          
-            if(array[currentIdx] < array[smallestNumIdx]) {
-              smallestNumIdx = currentIdx
-            }
-            this.setState({list: array, pointer: currentIdx, sortRunning: true})
-            currentIdx++;
-          } else {
-            
-            if(readyToSwap) {
-              let temp = array[startingIdx];
-              array[startingIdx] = array[smallestNumIdx];
-              array[smallestNumIdx] = temp;
-              startingIdx++;
-              iterated = true
-              this.setState({list: array, pointer: startingIdx-1, sortRunning: true})
-              readyToSwap = false
-            } else {
-              this.setState({list: array, pointer: smallestNumIdx, sortRunning: true})
-              readyToSwap = true
-            }
-            
+      if(!sorted) {
+        let started = setInterval(()=> {
+          if(iterated===true) {
+            currentIdx = startingIdx
+            smallestNumIdx = startingIdx
+            iterated = false
           }
-        }
-        
-        if(startingIdx===array.length) {
-          console.log("CLEARED")
-          this.playFinishedSound();
-          clearInterval(started)
-          this.setState({sortRunning: false})
-        }
-      }, 50)
+  
+          if(currentIdx === startingIdx) {
+            this.setState({list: array, pointer: currentIdx, sortRunning: true})
+            currentIdx++
+          } else {
+            if(currentIdx < array.length) {
+            
+              if(array[currentIdx] < array[smallestNumIdx]) {
+                smallestNumIdx = currentIdx
+              }
+              this.setState({list: array, pointer: currentIdx, sortRunning: true})
+              currentIdx++;
+            } else {
+              
+              if(readyToSwap) {
+                let temp = array[startingIdx];
+                array[startingIdx] = array[smallestNumIdx];
+                array[smallestNumIdx] = temp;
+                startingIdx++;
+                iterated = true
+                this.setState({list: array, pointer: startingIdx-1, sortRunning: true})
+                readyToSwap = false
+              } else {
+                this.setState({list: array, pointer: smallestNumIdx, sortRunning: true})
+                readyToSwap = true
+              }
+              
+            }
+          }
+          
+          if(startingIdx===array.length || sorted === true) {
+            console.log("CLEARED")
+            this.playFinishedSound();
+            clearInterval(started)
+            this.setState({sortRunning: false})
+          }
+        }, 50)
+      }
 
     }
+  }
+
+  checkSorted = () => {
+    let array = this.state.list
+    let current = 0
+
+    for(let i = 0; i < array.length-1; i++) {
+      if(array[i] > array[i+1]) {
+        return false
+      }
+    }
+
+    let started = setInterval(()=> {
+      current++
+      this.setState({list: array, pointer: current, sortRunning: true})
+
+      if(current===array.length) {
+        console.log("CLEARED")
+        this.playFinishedSound();
+        clearInterval(started)
+        this.setState({sortRunning: false})
+      }
+    }, 50)
+    return true
   }
 
 
@@ -189,7 +220,7 @@ class App extends Component {
         <button className="button bubble" onClick={this.bubbleSort}>BUBBLE SORT</button>
         <button className="button insertion" onClick={this.insertionSort}>INSERTION SORT</button>
         <button className="button selection" onClick={this.selectionSort}>SELECTION SORT</button>
-        <button className="button reset" onClick={this.reset}>RESET</button>
+        <button className="button generate" onClick={this.generateArray}>Generate</button>
       </div>
     )
   }
