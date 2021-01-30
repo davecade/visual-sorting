@@ -3,6 +3,8 @@ import './App.scss';
 import Graph from './components/graph/graph.component'
 import { sound } from './data/sound'
 
+//[9, 16, 17, 14, 2, 16, 10, 16, 5, 5, 8, 14, 15, 9, 11, 4, 16, 19, 0, 9, 5, 6, 10, 18, 17],
+
 class App extends Component {
   constructor(props) {
     super(props)
@@ -18,7 +20,7 @@ class App extends Component {
     let size = 25
     let result = []
     
-    for(let i= 0; i<size; i++) result.push(Math.floor(Math.random() * 20))
+    for(let i= 0; i<size; i++) result.push(Math.floor(Math.random() * 20)+1)
 
     this.setState({list: result})
   }
@@ -47,6 +49,10 @@ class App extends Component {
       
       
       let started = setInterval(()=> {
+
+        if(sound.sorting.currentTime === sound.sorting.duration) {
+          sound.sorting.play()
+        }
         
         if(i===0) {
           finished = true
@@ -81,7 +87,7 @@ class App extends Component {
   }
 
   insertionSort = () => {
-
+    console.log(this.state.list)
     if(!this.state.sortRunning) {
       this.playSortingSound();
 
@@ -91,9 +97,12 @@ class App extends Component {
       let timeToIterate = true
       
       let started = setInterval(()=> {
+        if(sound.sorting.currentTime === sound.sorting.duration) {
+          sound.sorting.play()
+        }
 
         if(array.length>1) {
-
+          
           if(timeToIterate) {
             i++;
             currentIdx=i;
@@ -109,8 +118,8 @@ class App extends Component {
             timeToIterate = true
           }
         }
-
         this.setState({list: array, pointer: currentIdx, sortRunning: true})
+        
 
         if(array.length===1 || i===array.length) {
           console.log("CLEARED")
@@ -139,6 +148,10 @@ class App extends Component {
 
       if(!sorted) {
         let started = setInterval(()=> {
+          if(sound.sorting.currentTime === sound.sorting.duration) {
+            sound.sorting.play()
+          }
+          
           if(iterated===true) {
             currentIdx = startingIdx
             smallestNumIdx = startingIdx
@@ -216,11 +229,11 @@ class App extends Component {
     return (
       <div className="App">
         <h1 className="title">SORTING APP</h1>
-        <Graph list={this.state.list} pointer={this.state.pointer} sortRunning={this.state.sortRunning} />
         <button className="button bubble" onClick={this.bubbleSort}>BUBBLE SORT</button>
         <button className="button insertion" onClick={this.insertionSort}>INSERTION SORT</button>
         <button className="button selection" onClick={this.selectionSort}>SELECTION SORT</button>
-        <button className="button generate" onClick={this.generateArray}>Generate</button>
+        <Graph list={this.state.list} pointer={this.state.pointer} sortRunning={this.state.sortRunning} />
+        <button className="button generate" onClick={this.generateArray}>Generate Graph</button>
       </div>
     )
   }
