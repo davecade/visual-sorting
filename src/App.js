@@ -151,7 +151,7 @@ class App extends Component {
           if(sound.sorting.currentTime === sound.sorting.duration) {
             sound.sorting.play()
           }
-          
+
           if(iterated===true) {
             currentIdx = startingIdx
             smallestNumIdx = startingIdx
@@ -199,6 +199,7 @@ class App extends Component {
     }
   }
 
+  
   checkSorted = () => {
     let array = this.state.list
     let current = 0
