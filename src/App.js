@@ -12,7 +12,8 @@ class App extends Component {
     this.state = {
         list: [],
         pointer: 0,
-        sortRunning: false
+        sortRunning: false,
+        graphGenerated: false
     }
   }
 
@@ -22,7 +23,7 @@ class App extends Component {
     
     for(let i= 0; i<size; i++) result.push(Math.floor(Math.random() * 20)+1)
 
-    this.setState({list: result})
+    this.setState({list: result, graphGenerated: true})
   }
 
   playSortingSound = () => {
@@ -39,7 +40,7 @@ class App extends Component {
 
   bubbleSort = () => {
 
-    if(!this.state.sortRunning) {
+    if(!this.state.sortRunning && this.state.graphGenerated) {
       this.playSortingSound()
 
       let array = this.state.list
@@ -87,8 +88,9 @@ class App extends Component {
   }
 
   insertionSort = () => {
-    console.log(this.state.list)
-    if(!this.state.sortRunning) {
+
+
+    if(!this.state.sortRunning && this.state.graphGenerated) {
       this.playSortingSound();
 
       let array = this.state.list
@@ -135,7 +137,7 @@ class App extends Component {
   }
 
   selectionSort = () => {
-    if(!this.state.sortRunning) {
+    if(!this.state.sortRunning && this.state.graphGenerated) {
       this.playSortingSound();
 
       let array = this.state.list
@@ -229,7 +231,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <h1 className="title">SORTING APP</h1>
+        <h1 className="title">VISUAL SORTING</h1>
         <button className="button bubble" onClick={this.bubbleSort}>BUBBLE SORT</button>
         <button className="button insertion" onClick={this.insertionSort}>INSERTION SORT</button>
         <button className="button selection" onClick={this.selectionSort}>SELECTION SORT</button>
