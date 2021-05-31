@@ -13,7 +13,8 @@ class App extends Component {
         list: [],
         pointer: 0,
         sortRunning: false,
-        graphGenerated: false
+        graphGenerated: false,
+        stopClicked: false
     }
   }
 
@@ -76,11 +77,11 @@ class App extends Component {
         this.setState({list: array, pointer: i, sortRunning: true})
 
 
-        if(count===0 || (finished===true && i===0)) {
+        if(count===0 || (finished===true && i===0) || this.state.stopClicked === true) {
           console.log("CLEARED")
           this.playFinishedSound()
           clearInterval(started)
-          this.setState({sortRunning: false})
+          this.setState({sortRunning: false, stopClicked: false})
         }
 
       }, 50)
@@ -123,11 +124,11 @@ class App extends Component {
         this.setState({list: array, pointer: currentIdx, sortRunning: true})
         
 
-        if(array.length===1 || i===array.length) {
+        if(array.length===1 || i===array.length || this.state.stopClicked === true) {
           console.log("CLEARED")
           this.playFinishedSound();
           clearInterval(started)
-          this.setState({sortRunning: false})
+          this.setState({sortRunning: false, stopClicked: false})
         }
 
       }, 50)
@@ -189,11 +190,11 @@ class App extends Component {
             }
           }
           
-          if(startingIdx===array.length || sorted === true) {
+          if(startingIdx===array.length || sorted === true || this.state.stopClicked === true) {
             console.log("CLEARED")
             this.playFinishedSound();
             clearInterval(started)
-            this.setState({sortRunning: false})
+            this.setState({sortRunning: false, stopClicked: false})
           }
         }, 50)
       }
@@ -226,6 +227,10 @@ class App extends Component {
     return true
   }
 
+  stopButton = () => {
+    this.setState({stopClicked: true})
+  }
+
 
   render() {
 
@@ -238,7 +243,7 @@ class App extends Component {
         <button className="button quick" onClick={()=>'nothing yet'}>QUICK SORT</button>
         <Graph list={this.state.list} pointer={this.state.pointer} sortRunning={this.state.sortRunning} />
         {
-          this.state.sortRunning ? <button className="button stop" onClick={()=>'Stop running'}>STOP</button>
+          this.state.sortRunning ? <button className="button stop" onClick={this.stopButton}>STOP</button>
           :
           <button className="button generate" onClick={this.generateArray}>Generate Graph</button>
         } 
