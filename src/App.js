@@ -235,6 +235,7 @@ class App extends Component {
         <button className="button bubble" onClick={this.bubbleSort}>BUBBLE SORT</button>
         <button className="button insertion" onClick={this.insertionSort}>INSERTION SORT</button>
         <button className="button selection" onClick={this.selectionSort}>SELECTION SORT</button>
+        <button className="button quick" onClick={()=>'nothing yet'}>QUICK SORT</button>
         <Graph list={this.state.list} pointer={this.state.pointer} sortRunning={this.state.sortRunning} />
         <button className="button generate" onClick={this.generateArray}>Generate Graph</button>
       </div>
