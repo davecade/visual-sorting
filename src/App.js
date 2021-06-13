@@ -14,7 +14,8 @@ class App extends Component {
         pointer: 0,
         sortRunning: false,
         graphGenerated: false,
-        stopClicked: false
+        stopClicked: false,
+        rightPointer: null
     }
   }
 
@@ -140,7 +141,7 @@ class App extends Component {
   selectionSort = () => {
     if(!this.state.sortRunning && this.state.graphGenerated) {
       this.playSortingSound();
-
+      console.log("Started")
       let array = this.state.list
       let smallestNumIdx = 0;
       let startingIdx = 0;
@@ -191,7 +192,6 @@ class App extends Component {
           }
           
           if(startingIdx===array.length || sorted === true || this.state.stopClicked === true) {
-            console.log("CLEARED")
             this.playFinishedSound();
             clearInterval(started)
             this.setState({sortRunning: false, stopClicked: false})
@@ -199,6 +199,58 @@ class App extends Component {
         }, 50)
       }
 
+    }
+  }
+
+  quickSort = () => {
+    if(!this.state.sortRunning && this.state.graphGenerated) {
+        this.playSortingSound();
+        console.log("Started")
+        let sorted = this.checkSorted()
+        let array = this.state.list
+        let temp = null;
+        let pivot = 0;
+        let left = pivot+1;
+        let right = array.length-1
+
+        if(!sorted) {
+          let started = setInterval(()=>{
+              if(right >= left) {
+
+                  if((array[left] > array[pivot]) && (array[right] < array[pivot])) {
+                      temp = array[left]
+                      array[left] = array[right];
+                      array[right] = temp
+                  } else {
+      
+                      if(array[left] <= array[pivot]) {
+                          left++
+                          this.setState({pointer: left, sortRunning: true})
+                          
+                      }
+                      
+                      if(array[right] >= array[pivot]) {
+                          right--
+                          this.setState({pointer: right, rightIndex: right, sortRunning: true})
+                      }
+                  }
+              } else {
+                  temp = array[pivot]
+                  array[pivot] = array[right]
+                  array[right] = temp
+                  this.setState({list: array, pointer: left, rightPointer: right, sortRunning: true})
+              }
+
+
+
+
+              if(sorted === true || this.state.stopClicked === true) {
+                  this.playFinishedSound();
+                  clearInterval(started)
+                  this.setState({sortRunning: false, stopClicked: false})
+              }
+          }, 50)
+        }
     }
   }
 
@@ -218,7 +270,6 @@ class App extends Component {
       this.setState({list: array, pointer: current, sortRunning: true})
 
       if(current===array.length) {
-        console.log("CLEARED")
         this.playFinishedSound();
         clearInterval(started)
         this.setState({sortRunning: false})
@@ -228,7 +279,7 @@ class App extends Component {
   }
 
   stopButton = () => {
-    this.setState({stopClicked: true})
+    this.setState({stopClicked: true, rightPointer: null})
   }
 
 
@@ -240,8 +291,8 @@ class App extends Component {
         <button className="button bubble" onClick={this.bubbleSort}>BUBBLE SORT</button>
         <button className="button insertion" onClick={this.insertionSort}>INSERTION SORT</button>
         <button className="button selection" onClick={this.selectionSort}>SELECTION SORT</button>
-        <button className="button quick" onClick={()=>'nothing yet'}>QUICK SORT</button>
-        <Graph list={this.state.list} pointer={this.state.pointer} sortRunning={this.state.sortRunning} />
+        <button className="button quick" onClick={this.quickSort}>QUICK SORT</button>
+        <Graph list={this.state.list} pointer={this.state.pointer} rightPointer={this.state.rightPointer} rightIndex={this.state.rightIndex} sortRunning={this.state.sortRunning} />
         {
           this.state.sortRunning ? <button className="button stop" onClick={this.stopButton}>STOP</button>
           :
