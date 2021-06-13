@@ -212,7 +212,9 @@ class App extends Component {
         let pivot = 0;
         let left = pivot+1;
         let right = array.length-1
+        let swapped = false
 
+        //-- Need iterative quick sort
         if(!sorted) {
           let started = setInterval(()=>{
               if(right >= left) {
@@ -221,6 +223,7 @@ class App extends Component {
                       temp = array[left]
                       array[left] = array[right];
                       array[right] = temp
+                      swapped = true
                   } else {
       
                       if(array[left] <= array[pivot]) {
@@ -242,6 +245,25 @@ class App extends Component {
               }
 
 
+              if(swapped) {
+                //Split arrays
+                let leftArray = array.slice(0,right)
+                let rightArray = array.slice(right+1)
+
+                if((leftArray.length>0) && (rightArray.length>0)) {
+			
+                    if(leftArray.length<rightArray.length) {
+                      //Do left first
+                      leftArray = quickSort(leftArray)
+                      rightArray = quickSort(rightArray)
+                    } else {
+                      //Do right first
+                      rightArray = quickSort(rightArray)
+                      leftArray = quickSort(leftArray)
+                    }
+                  return [...leftArray, array[right], ...rightArray]
+                }
+              }
 
 
               if(sorted === true || this.state.stopClicked === true) {
