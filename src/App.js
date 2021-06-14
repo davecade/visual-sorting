@@ -21,9 +21,9 @@ class App extends Component {
 
   generateArray = () => {
     let size = 25
-    let result = [8, 5, 2, 9 ,5, 6, 3]
-    
-    //for(let i= 0; i<size; i++) result.push(Math.floor(Math.random() * 20)+1)
+    //let result = [8, 5, 2, 9 ,5, 6, 3]
+    let result = []
+    for(let i= 0; i<size; i++) result.push(Math.floor(Math.random() * 20)+1)
 
     this.setState({list: result, graphGenerated: true})
   }
@@ -202,273 +202,82 @@ class App extends Component {
     }
   }
 
-  quickSort_proto = () => {
-    if(!this.state.sortRunning && this.state.graphGenerated) {
-        this.playSortingSound();
-        console.log("Started")
-        let sorted = this.checkSorted()
-        let array = this.state.list
-        let temp = null;
-        let pivot = 0;
-        let left = pivot+1;
-        let right = array.length-1
-        let swapped = false
-        let nullArray = array.map(item => item)
-        let countLeftRightArray = 0
 
-        //-- Need iterative quick sort
-        if(!sorted) {
-          let started = setInterval(()=>{
-              if(right >= left) {
-
-
-                  if((array[left] > array[pivot]) && (array[right] < array[pivot])) {
-                      temp = array[left]
-                      array[left] = array[right];
-                      array[right] = temp
-                      this.setState({list: array, pointer: left, rightPointer: right, sortRunning: true})
-                  } else {
-      
-                      if(array[left] <= array[pivot]) {
-                          left++
-                          this.setState({pointer: left, rightIndex: right, sortRunning: true})
-                          
-                      }
-                      
-                      if(array[right] >= array[pivot]) {
-                          right--
-                          this.setState({pointer: left, rightIndex: right, sortRunning: true})
-                      }
-                  }
-              } else {
-                  temp = array[pivot]
-                  array[pivot] = array[right]
-                  array[right] = temp
-                  swapped=true
-                  this.setState({list: array, pointer: left, rightPointer: right, sortRunning: true})
-              }
-
-              if(swapped) {
-                swapped = false
-                let data = []
-              }
-
-
-              if(sorted === true || this.state.stopClicked === true) {
-                  this.playFinishedSound();
-                  clearInterval(started)
-                  this.setState({sortRunning: false, stopClicked: false})
-              }
-          }, 50)
-        }
-    }
-  }
-
-  quickSort = () => {
+  quickSort = async () => {
     if(!this.state.sortRunning && this.state.graphGenerated) {
       this.playSortingSound();
-
       let sorted = this.checkSorted()
-      let data = []
       let array = this.state.list
-      let sortedArray = this.quickSortRecursive(array, [], 0, 0, 0, data=[])
-      //data = data.filter(item => item!==null)
-      console.log("Array: ", array)
-      console.log("Sorted: ", sortedArray)
-      console.log("DATA: ", data)
-      let dataCounter = 0
-      let pivot = data[dataCounter][0]
-      let left = data[dataCounter][1]
-      let right = data[dataCounter][2]
-      let temp
-      let swapped
 
       if(!sorted) {
-        let started = setInterval(()=>{
-          if(right >= left) {
-            if((array[left] > array[pivot]) && (array[right] < array[pivot])) {
-                temp = array[left]
-                array[left] = array[right];
-                array[right] = temp
-                this.setState({list: array, pointer: left, rightPointer: right, sortRunning: true})
-            } else {
-
-                if(array[left] <= array[pivot]) {
-                    left++
-                    this.setState({pointer: left, rightIndex: right, sortRunning: true})
-                    
-                }
-                
-                if(array[right] >= array[pivot]) {
-                    right--
-                    this.setState({pointer: left, rightIndex: right, sortRunning: true})
-                }
-            }
-        } else {
-            temp = array[pivot]
-            array[pivot] = array[right]
-            array[right] = temp
-            swapped=true
-            this.setState({list: array, pointer: left, rightPointer: right, sortRunning: true})
-        }
-
-        if(swapped) {
-          swapped=false
-          if(dataCounter < data.length-1) {
-            dataCounter++
-            
-            try {
-              pivot = data[dataCounter][0]
-              left = data[dataCounter][1]
-              right = data[dataCounter][2]
-            } catch(error) {
-              console.log(error)
-            }
-
-          } else {
-            sorted = true
-          }
-        }
+          await this.quickSortHelper(array, 0, array.length-1)
+          this.setState({list: array, sortRunning: true})
+          sorted=true
 
           if(sorted === true || this.state.stopClicked === true) {
             this.playFinishedSound();
-            clearInterval(started)
-            this.setState({sortRunning: false, stopClicked: false})
+            this.setState({sortRunning: false, rightPointer: null, stopClicked: false})
           }
-        }, 500)
       }
     }
   }
 
-  splittingProcess = (array, nullArray, pivot) => {
-      let leftArray = array.slice(0,pivot)
-      let rightArray = array.slice(pivot+1)
-      this.modifyNullArray(pivot, nullArray)
-      let leftArrayData = this.findLeftArrayData(pivot, leftArray.length)
-      let rightArrayData = this.findRightArrayData(pivot, rightArray.length)
-      console.log("NULL ARRAY: ", nullArray)
-      console.log("LEFT DATA ", leftArrayData)
-      console.log("RIGHT DATA ", rightArrayData)
-      return [leftArrayData, rightArrayData]
+  swap = async (i, j, array) => {
+    const timer = ms => new Promise(res => setTimeout(res, ms))
+    let temp = array[j];
+    array[j] = array[i];
+    this.setState({list: array, pointer: i, rightPointer: j, sortRunning: true})
+    await timer(25);
+    array[i] = temp
+    this.setState({list: array, pointer: i, rightPointer: j, sortRunning: true})
+    await timer(25);
   }
 
-  addNull = (array, start, end) => {
-    let result = []
-    for(let i = 0; i<array.length; i++) {
-      if(i < start || i > end) {
-        result.push(null)
+  quickSortHelper = async (array, startIdx, endIdx) => {
+      const timer = ms => new Promise(res => setTimeout(res, ms))
+      if(startIdx >= endIdx) return;
+      const pivotIdx = startIdx;
+      let leftIdx = startIdx+1;
+      let rightIdx = endIdx;
+      this.setState({list: array, pointer: leftIdx, rightPointer: rightIdx, sortRunning: true})
+      await timer(25);
+
+      while(rightIdx >= leftIdx) {
+        if(array[leftIdx] > array[pivotIdx] && array[rightIdx] < array[pivotIdx]) {
+          this.swap(leftIdx, rightIdx, array)
+        }
+        if(array[leftIdx] <= array[pivotIdx]) leftIdx++;
+        this.setState({list: array, pointer: leftIdx, rightPointer: rightIdx, sortRunning: true})
+        await timer(25);
+        if(array[rightIdx]>= array[pivotIdx]) rightIdx--;
+        this.setState({list: array, pointer: leftIdx, rightPointer: rightIdx, sortRunning: true})
+        await timer(25);
+      }
+      this.swap(pivotIdx, rightIdx, array);
+      const leftSubarrayIsSmaller = rightIdx - 1 - startIdx < endIdx - (rightIdx + 1);
+      if(leftSubarrayIsSmaller) {
+        await this.quickSortHelper(array, startIdx, rightIdx-1);
+        this.setState({list: array, pointer: leftIdx, rightPointer: rightIdx, sortRunning: true})
+        await timer(25);
+
+        await this.quickSortHelper(array, rightIdx + 1, endIdx);
+        this.setState({list: array, pointer: leftIdx, rightPointer: rightIdx, sortRunning: true})
+        await timer(25);
+
       } else {
-        result.push(array[i])
+        await this.quickSortHelper(array, rightIdx+1, endIdx);
+        this.setState({list: array, pointer: leftIdx, rightPointer: rightIdx, sortRunning: true})
+        await timer(25);
+
+        await this.quickSortHelper(array, startIdx, rightIdx-1);
+        this.setState({list: array, pointer: leftIdx, rightPointer: rightIdx, sortRunning: true})
+        await timer(25);
       }
-    }
-    console.log(result)
-    return result
   }
-
-  findLeftArrayData = (pivotIdx, size) => {
-    if(size===0) {
-      return null
-    } else {
-      let right = pivotIdx-1;
-      let left = pivotIdx-(size-1);
-      let pivot = pivotIdx-size;
-      let data = [pivot, left, right]
-      return data
-    }
-  }
-
-  findRightArrayData = (pivotIdx, size) => {
-    if(size===0) {
-      return null
-    } else {
-      let pivot = pivotIdx+1;
-      let left = pivotIdx+2;
-      let right = pivotIdx + size;
-      let data = [pivot, left, right]
-      return data
-    }
-  }
-
-  quickSortRecursive = (array, arrayWithNull=[], Dpivot=0, Dleft = Dpivot+1, Dright = array.length-1, data=[]) => {
-
-    let temp = null
-    let pivot = 0
-    let left = pivot+1
-    let right = array.length-1
-    
-    // Only start sorting if array length > 1
-    if(array.length>1) {
-      while(right >= left) {
   
-        if((array[left] > array[pivot]) && (array[right] < array[pivot])) {
-          temp = array[left]
-          array[left] = array[right];
-          array[right] = temp
-        } else {
-  
-          if(array[left] <= array[pivot]) {
-            left++
-          }
-          
-          if(array[right] >= array[pivot]) {
-            right--
-          }
-        }
-      }
-      
-      //swap pivot number with right
-      temp = array[pivot]
-      array[pivot] = array[right]
-      array[right] = temp
 
 
-      
-      //Split arrays
-      let leftArray = array.slice(0,right)
-      let rightArray = array.slice(right+1)
-      let leftArraySize = leftArray.length
-      let rightArraySize = rightArray.length
-      let leftArrayWithNull = this.addNull(array,  right-leftArraySize, right-1)
-      let rightArrayWithNull = this.addNull(array, right+1, right+rightArraySize)
 
-      //-- Need to get thee data of the NULL array
-      data.push(this.findLeftArrayData(right, leftArraySize))
-      data.push(this.findRightArrayData(right, rightArraySize))
-
-      //Check left sub array and right sub array exist
-      if((leftArray.length>0) && (rightArray.length>0)) {
-        
-          if(leftArray.length<rightArray.length) {
-            //Do left first
-            leftArray = this.quickSortRecursive(leftArray, leftArrayWithNull, right, right-(leftArraySize-1), right-1, data)
-            rightArray = this.quickSortRecursive(rightArray, rightArrayWithNull, right, right+2, right+ rightArraySize, data)
-          } else {
-            //Do right first
-            rightArray = this.quickSortRecursive(rightArray, right, right+2, right+ rightArraySize, data)
-            leftArray = this.quickSortRecursive(leftArray, right, right-(leftArraySize-1), right-1,  data)
-          }
-        return [...leftArray, array[right], ...rightArray]
-      } else {
-        if(leftArray.length > 0) {
-          //Do left
-          leftArray = this.quickSortRecursive(leftArray, leftArrayWithNull, right, right-(leftArraySize-1), right-1, data)
-          return [...leftArray, array[right]]
-        }
-        
-        if(rightArray.length > 0) {
-          //Do right
-          rightArray = this.quickSortRecursive(rightArray, rightArrayWithNull, right, right+2, right+ rightArraySize, data)
-          return [array[right], ...rightArray]
-        }
-      }
-    }
-    
-    //If array length is not > 1, then just return array
-    return array
-
-  }
-
-  
   checkSorted = () => {
     let array = this.state.list
     let current = 0
