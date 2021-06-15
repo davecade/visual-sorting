@@ -26,12 +26,10 @@ class App extends Component {
     for(let i= 0; i<size; i++) {
       let randomNum = Math.floor(Math.random() * 25)+1
       while(result.includes(randomNum)) {
-        console.log("DUP", randomNum)
         randomNum = Math.floor(Math.random() * 25)+1
       }
       result.push(randomNum)
     }
-    console.log("Result: ", result)
     this.setState({list: result, graphGenerated: true})
   }
 
@@ -235,9 +233,11 @@ class App extends Component {
     array[j] = array[i];
     this.setState({list: array, pointer: i, rightPointer: j, sortRunning: true})
     await timer(30);
+    if(this.clicked()) return
     array[i] = temp
     this.setState({list: array, pointer: i, rightPointer: j, sortRunning: true})
     await timer(30);
+    if(this.clicked()) return
   }
 
   quickSortHelper = async (array, startIdx, endIdx) => {
@@ -248,40 +248,61 @@ class App extends Component {
       let rightIdx = endIdx;
       this.setState({list: array, pointer: leftIdx, rightPointer: rightIdx, sortRunning: true})
       await timer(30);
+      if(this.clicked()) return
 
       while(rightIdx >= leftIdx) {
+        if(this.clicked()) return
         if(array[leftIdx] > array[pivotIdx] && array[rightIdx] < array[pivotIdx]) {
+          if(this.clicked()) return
           this.swap(leftIdx, rightIdx, array)
         }
+
         if(array[leftIdx] <= array[pivotIdx]) leftIdx++;
         this.setState({list: array, pointer: leftIdx, rightPointer: rightIdx, sortRunning: true})
         await timer(30);
+        if(this.clicked()) return
+
         if(array[rightIdx]>= array[pivotIdx]) rightIdx--;
         this.setState({list: array, pointer: leftIdx, rightPointer: rightIdx, sortRunning: true})
         await timer(30);
+        if(this.clicked()) return
       }
       this.swap(pivotIdx, rightIdx, array);
       const leftSubarrayIsSmaller = rightIdx - 1 - startIdx < endIdx - (rightIdx + 1);
       if(leftSubarrayIsSmaller) {
         await this.quickSortHelper(array, startIdx, rightIdx-1);
+        if(this.clicked()) return
+
         this.setState({list: array, pointer: leftIdx, rightPointer: rightIdx, sortRunning: true})
         await timer(30);
 
+        if(this.clicked()) return
+
         await this.quickSortHelper(array, rightIdx + 1, endIdx);
+        if(this.clicked()) return
         this.setState({list: array, pointer: leftIdx, rightPointer: rightIdx, sortRunning: true})
         await timer(30);
+        if(this.clicked()) return
 
       } else {
         await this.quickSortHelper(array, rightIdx+1, endIdx);
+        if(this.clicked()) return
         this.setState({list: array, pointer: leftIdx, rightPointer: rightIdx, sortRunning: true})
         await timer(30);
 
         await this.quickSortHelper(array, startIdx, rightIdx-1);
+        if(this.clicked()) return
         this.setState({list: array, pointer: leftIdx, rightPointer: rightIdx, sortRunning: true})
         await timer(30);
+        if(this.clicked()) return
       }
   }
   
+  clicked = () => {
+    if(this.state.stopClicked === true) {
+      return true;
+    }
+  }
 
 
 
