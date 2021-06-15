@@ -21,17 +21,17 @@ class App extends Component {
 
   generateArray = () => {
     let size = 25
-    let randomNum = 0
-    //let result = [8, 5, 2, 9 ,5, 6, 3]
     let result = []
-    for(let i= 0; i<size; i++) {
-      while(!result.includes(randomNum)) {
-        //-- stop same number from being added to array
-      }
-      let randomNum = Math.floor(Math.random() * 20)+1
-      result.push(Math.floor(Math.random() * 20)+1)
-    }
 
+    for(let i= 0; i<size; i++) {
+      let randomNum = Math.floor(Math.random() * 25)+1
+      while(result.includes(randomNum)) {
+        console.log("DUP", randomNum)
+        randomNum = Math.floor(Math.random() * 25)+1
+      }
+      result.push(randomNum)
+    }
+    console.log("Result: ", result)
     this.setState({list: result, graphGenerated: true})
   }
 
