@@ -21,9 +21,16 @@ class App extends Component {
 
   generateArray = () => {
     let size = 25
+    let randomNum = 0
     //let result = [8, 5, 2, 9 ,5, 6, 3]
     let result = []
-    for(let i= 0; i<size; i++) result.push(Math.floor(Math.random() * 20)+1)
+    for(let i= 0; i<size; i++) {
+      while(!result.includes(randomNum)) {
+        //-- stop same number from being added to array
+      }
+      let randomNum = Math.floor(Math.random() * 20)+1
+      result.push(Math.floor(Math.random() * 20)+1)
+    }
 
     this.setState({list: result, graphGenerated: true})
   }
@@ -227,10 +234,10 @@ class App extends Component {
     let temp = array[j];
     array[j] = array[i];
     this.setState({list: array, pointer: i, rightPointer: j, sortRunning: true})
-    await timer(25);
+    await timer(30);
     array[i] = temp
     this.setState({list: array, pointer: i, rightPointer: j, sortRunning: true})
-    await timer(25);
+    await timer(30);
   }
 
   quickSortHelper = async (array, startIdx, endIdx) => {
@@ -240,7 +247,7 @@ class App extends Component {
       let leftIdx = startIdx+1;
       let rightIdx = endIdx;
       this.setState({list: array, pointer: leftIdx, rightPointer: rightIdx, sortRunning: true})
-      await timer(25);
+      await timer(30);
 
       while(rightIdx >= leftIdx) {
         if(array[leftIdx] > array[pivotIdx] && array[rightIdx] < array[pivotIdx]) {
@@ -248,30 +255,30 @@ class App extends Component {
         }
         if(array[leftIdx] <= array[pivotIdx]) leftIdx++;
         this.setState({list: array, pointer: leftIdx, rightPointer: rightIdx, sortRunning: true})
-        await timer(25);
+        await timer(30);
         if(array[rightIdx]>= array[pivotIdx]) rightIdx--;
         this.setState({list: array, pointer: leftIdx, rightPointer: rightIdx, sortRunning: true})
-        await timer(25);
+        await timer(30);
       }
       this.swap(pivotIdx, rightIdx, array);
       const leftSubarrayIsSmaller = rightIdx - 1 - startIdx < endIdx - (rightIdx + 1);
       if(leftSubarrayIsSmaller) {
         await this.quickSortHelper(array, startIdx, rightIdx-1);
         this.setState({list: array, pointer: leftIdx, rightPointer: rightIdx, sortRunning: true})
-        await timer(25);
+        await timer(30);
 
         await this.quickSortHelper(array, rightIdx + 1, endIdx);
         this.setState({list: array, pointer: leftIdx, rightPointer: rightIdx, sortRunning: true})
-        await timer(25);
+        await timer(30);
 
       } else {
         await this.quickSortHelper(array, rightIdx+1, endIdx);
         this.setState({list: array, pointer: leftIdx, rightPointer: rightIdx, sortRunning: true})
-        await timer(25);
+        await timer(30);
 
         await this.quickSortHelper(array, startIdx, rightIdx-1);
         this.setState({list: array, pointer: leftIdx, rightPointer: rightIdx, sortRunning: true})
-        await timer(25);
+        await timer(30);
       }
   }
   

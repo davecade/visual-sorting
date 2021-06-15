@@ -10,7 +10,7 @@ const Block = ({currentIndex, pointer, rightPointer, sortRunning}) => {
         
         if(rightPointer!==null) {
             if(sortRunning && currentIndex===rightPointer){
-                return 'pointing'
+                return 'right-pointing'
             }
         }
 
