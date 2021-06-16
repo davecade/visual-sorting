@@ -2,6 +2,8 @@ import {React, Component } from 'react';
 import './App.scss';
 import Graph from './components/graph/graph.component'
 import { sound } from './data/sound'
+import { connect } from 'react-redux'
+import { generateGraph, updateGraph } from './Redux/sort/sort.actions'
 
 //[9, 16, 17, 14, 2, 16, 10, 16, 5, 5, 8, 14, 15, 9, 11, 4, 16, 19, 0, 9, 5, 6, 10, 18, 17],
 
@@ -10,27 +12,11 @@ class App extends Component {
     super(props)
 
     this.state = {
-        list: [],
         pointer: 0,
         sortRunning: false,
-        graphGenerated: false,
         stopClicked: false,
         rightPointer: null
     }
-  }
-
-  generateArray = () => {
-    let size = 25
-    let result = []
-
-    for(let i= 0; i<size; i++) {
-      let randomNum = Math.floor(Math.random() * 25)+1
-      while(result.includes(randomNum)) {
-        randomNum = Math.floor(Math.random() * 25)+1
-      }
-      result.push(randomNum)
-    }
-    this.setState({list: result, graphGenerated: true})
   }
 
   playSortingSound = () => {
@@ -46,10 +32,13 @@ class App extends Component {
   }
 
   bubbleSort = () => {
-    if(!this.state.sortRunning && this.state.graphGenerated) {
+
+    const { list, updateGraph, graphGenerated } = this.props
+
+    if(!this.state.sortRunning && graphGenerated) {
       this.playSortingSound()
 
-      let array = this.state.list
+      let array = list
       let count = array.length-1
       let i = 0;
       let finished
@@ -79,7 +68,8 @@ class App extends Component {
           i++
         }
 
-        this.setState({list: array, pointer: i, sortRunning: true})
+        updateGraph(array)
+        this.setState({pointer: i, sortRunning: true})
 
 
         if(count===0 || (finished===true && i===0) || this.state.stopClicked === true) {
@@ -333,6 +323,8 @@ class App extends Component {
 
   render() {
 
+    const { graphGenerated, list, generateGraph } = this.props
+
     return (
       <div className="App">
         <h1 className="title">VISUAL SORTING</h1>
@@ -340,15 +332,25 @@ class App extends Component {
         <button className="button insertion" onClick={this.insertionSort}>INSERTION SORT</button>
         <button className="button selection" onClick={this.selectionSort}>SELECTION SORT</button>
         <button className="button quick" onClick={this.quickSort}>QUICK SORT</button>
-        <Graph list={this.state.list} pointer={this.state.pointer} rightPointer={this.state.rightPointer} rightIndex={this.state.rightIndex} sortRunning={this.state.sortRunning} />
+        <Graph list={list} pointer={this.state.pointer} rightPointer={this.state.rightPointer} rightIndex={this.state.rightIndex} sortRunning={this.state.sortRunning} />
         {
           this.state.sortRunning ? <button className="button stop" onClick={this.stopButton}>STOP</button>
           :
-          <button className="button generate" onClick={this.generateArray}>Generate Graph</button>
+          <button className="button generate" onClick={generateGraph}>Generate Graph</button>
         } 
       </div>
     )
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  list: state.sort.list,
+  graphGenerated: state.sort.graphGenerated
+})
+
+const mapDispatchToProps = dispatch => ({
+  generateGraph: () => dispatch(generateGraph()),
+  updateGraph: array => dispatch(updateGraph(array))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
