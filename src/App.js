@@ -46,7 +46,6 @@ class App extends Component {
   }
 
   bubbleSort = () => {
-
     if(!this.state.sortRunning && this.state.graphGenerated) {
       this.playSortingSound()
 
@@ -95,8 +94,6 @@ class App extends Component {
   }
 
   insertionSort = () => {
-
-
     if(!this.state.sortRunning && this.state.graphGenerated) {
       this.playSortingSound();
 
