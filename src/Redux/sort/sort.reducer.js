@@ -2,7 +2,8 @@ import { SortTypes } from "./sort.types";
 
 const INITIAL_STATE = {
     list: [],
-    graphGenerated: false
+    graphGenerated: false,
+    sortRunning: false,
 }
 
 const sortReducer = (state = INITIAL_STATE, action) => {
@@ -19,6 +20,12 @@ const sortReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 list: action.payload,
+            }
+
+        case SortTypes.TOGGLE_SORT_RUNNING:
+            return {
+                ...state,
+                sortRunning: action.payload,
             }
         
         default:

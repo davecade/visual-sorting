@@ -11,3 +11,8 @@ export const updateGraph = graph => ({
     payload: graph
 })
 
+export const toggleSortRunning = status => ({
+    type: SortTypes.TOGGLE_SORT_RUNNING,
+    payload: status
+})
+

@@ -1,8 +1,9 @@
 import React from 'react'
 import './graph.styles.scss'
 import Column from '../column/column.component'
+import { connect } from 'react-redux'
 
-const Graph = ({list, pointer, rightPointer, sortRunning}) => {
+const Graph = ({list, pointer, rightPointer}) => {
 
     return (
         <div className="graph">  
@@ -14,7 +15,6 @@ const Graph = ({list, pointer, rightPointer, sortRunning}) => {
                         number={item}
                         pointer={pointer}
                         rightPointer={rightPointer}
-                        sortRunning={sortRunning}
                     />
                 ))
             }
@@ -22,4 +22,8 @@ const Graph = ({list, pointer, rightPointer, sortRunning}) => {
     )
 }
 
-export default Graph;
+const mapStateToProps = state => ({
+    
+})
+
+export default connect(mapStateToProps)(Graph);

@@ -3,7 +3,7 @@ import './App.scss';
 import Graph from './components/graph/graph.component'
 import { sound } from './data/sound'
 import { connect } from 'react-redux'
-import { generateGraph, updateGraph } from './Redux/sort/sort.actions'
+import { generateGraph, toggleSortRunning, updateGraph } from './Redux/sort/sort.actions'
 
 //[9, 16, 17, 14, 2, 16, 10, 16, 5, 5, 8, 14, 15, 9, 11, 4, 16, 19, 0, 9, 5, 6, 10, 18, 17],
 
@@ -13,7 +13,6 @@ class App extends Component {
 
     this.state = {
         pointer: 0,
-        sortRunning: false,
         stopClicked: false,
         rightPointer: null
     }
@@ -33,9 +32,10 @@ class App extends Component {
 
   bubbleSort = () => {
 
-    const { list, updateGraph, graphGenerated } = this.props
+    const { list, updateGraph, graphGenerated, sortRunning, toggleSortRunning } = this.props
 
-    if(!this.state.sortRunning && graphGenerated) {
+    if(!sortRunning && graphGenerated) {
+      
       this.playSortingSound()
 
       let array = list
@@ -68,15 +68,19 @@ class App extends Component {
           i++
         }
 
+        toggleSortRunning(true)
+        this.setState({pointer: i})
         updateGraph(array)
-        this.setState({pointer: i, sortRunning: true})
+        
 
 
         if(count===0 || (finished===true && i===0) || this.state.stopClicked === true) {
           console.log("CLEARED")
           this.playFinishedSound()
           clearInterval(started)
-          this.setState({sortRunning: false, stopClicked: false})
+
+          toggleSortRunning(false)
+          this.setState({stopClicked: false})
         }
 
       }, 50)
@@ -84,10 +88,13 @@ class App extends Component {
   }
 
   insertionSort = () => {
-    if(!this.state.sortRunning && this.state.graphGenerated) {
+    const { list, updateGraph, graphGenerated, sortRunning } = this.props
+
+    if(!sortRunning && graphGenerated) {
+
       this.playSortingSound();
 
-      let array = this.state.list
+      let array = list
       let i = 0
       let currentIdx = 0
       let timeToIterate = true
@@ -114,7 +121,8 @@ class App extends Component {
             timeToIterate = true
           }
         }
-        this.setState({list: array, pointer: currentIdx, sortRunning: true})
+        updateGraph(array)
+        this.setState({pointer: currentIdx, sortRunning: true})
         
 
         if(array.length===1 || i===array.length || this.state.stopClicked === true) {
@@ -323,7 +331,7 @@ class App extends Component {
 
   render() {
 
-    const { graphGenerated, list, generateGraph } = this.props
+    const { list, generateGraph, sortRunning } = this.props
 
     return (
       <div className="App">
@@ -334,7 +342,7 @@ class App extends Component {
         <button className="button quick" onClick={this.quickSort}>QUICK SORT</button>
         <Graph list={list} pointer={this.state.pointer} rightPointer={this.state.rightPointer} rightIndex={this.state.rightIndex} sortRunning={this.state.sortRunning} />
         {
-          this.state.sortRunning ? <button className="button stop" onClick={this.stopButton}>STOP</button>
+          sortRunning ? <button className="button stop" onClick={this.stopButton}>STOP</button>
           :
           <button className="button generate" onClick={generateGraph}>Generate Graph</button>
         } 
@@ -345,12 +353,14 @@ class App extends Component {
 
 const mapStateToProps = state => ({
   list: state.sort.list,
-  graphGenerated: state.sort.graphGenerated
+  graphGenerated: state.sort.graphGenerated,
+  sortRunning: state.sort.sortRunning,
 })
 
 const mapDispatchToProps = dispatch => ({
   generateGraph: () => dispatch(generateGraph()),
-  updateGraph: array => dispatch(updateGraph(array))
+  updateGraph: array => dispatch(updateGraph(array)),
+  toggleSortRunning: status => dispatch(toggleSortRunning(status))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -1,5 +1,6 @@
 import React from 'react'
 import './block.styles.scss'
+import { connect } from 'react-redux'
 
 const Block = ({currentIndex, pointer, rightPointer, sortRunning}) => {
     
@@ -21,4 +22,8 @@ const Block = ({currentIndex, pointer, rightPointer, sortRunning}) => {
     return <li className={`${addHighlight()} block`}></li>
 }
 
-export default Block;
+const mapStateToProps = state => ({
+    sortRunning: state.sort.sortRunning,
+})
+
+export default connect(mapStateToProps)(Block);
