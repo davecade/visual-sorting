@@ -3,7 +3,14 @@ import './App.scss';
 import Graph from './components/graph/graph.component'
 import { sound } from './data/sound'
 import { connect } from 'react-redux'
-import { generateGraph, toggleSortRunning, updateGraph } from './Redux/sort/sort.actions'
+import { 
+  generateGraph,
+  toggleSortRunning,
+  toggleStopClicked,
+  updateGraph,
+  updateLeftPointer,
+  updateRightPointer
+} from './Redux/sort/sort.actions'
 
 //[9, 16, 17, 14, 2, 16, 10, 16, 5, 5, 8, 14, 15, 9, 11, 4, 16, 19, 0, 9, 5, 6, 10, 18, 17],
 
@@ -12,9 +19,7 @@ class App extends Component {
     super(props)
 
     this.state = {
-        pointer: 0,
-        stopClicked: false,
-        rightPointer: null
+        rightPointer: null,
     }
   }
 
@@ -32,10 +37,10 @@ class App extends Component {
 
   bubbleSort = () => {
 
-    const { list, updateGraph, graphGenerated, sortRunning, toggleSortRunning } = this.props
+    const { list, updateGraph, graphGenerated, sortRunning, toggleSortRunning, stopClicked, updateLeftPointer } = this.props
 
     if(!sortRunning && graphGenerated) {
-      
+      toggleSortRunning(true);
       this.playSortingSound()
 
       let array = list
@@ -68,19 +73,17 @@ class App extends Component {
           i++
         }
 
-        toggleSortRunning(true)
-        this.setState({pointer: i})
-        updateGraph(array)
+        updateGraph(array);
+        updateLeftPointer(i);
         
 
-
-        if(count===0 || (finished===true && i===0) || this.state.stopClicked === true) {
+        if(count===0 || (finished===true && i===0) || stopClicked) {
           console.log("CLEARED")
           this.playFinishedSound()
           clearInterval(started)
-
-          toggleSortRunning(false)
-          this.setState({stopClicked: false})
+          
+          toggleSortRunning(false);
+          toggleStopClicked(false);
         }
 
       }, 50)
@@ -294,7 +297,8 @@ class App extends Component {
   }
   
   clicked = () => {
-    if(this.state.stopClicked === true) {
+    const { stopClicked } = this.props
+    if(stopClicked === true) {
       return true;
     }
   }
@@ -302,7 +306,8 @@ class App extends Component {
 
 
   checkSorted = () => {
-    let array = this.state.list
+    const { list } = this.props
+    let array = list
     let current = 0
 
     for(let i = 0; i < array.length-1; i++) {
@@ -325,13 +330,16 @@ class App extends Component {
   }
 
   stopButton = () => {
-    this.setState({stopClicked: true, rightPointer: null})
+
+    const { toggleStopClicked } = this.props
+    toggleStopClicked(true)
+    this.setState({rightPointer: null})
   }
 
 
   render() {
 
-    const { list, generateGraph, sortRunning } = this.props
+    const { generateGraph, sortRunning } = this.props
 
     return (
       <div className="App">
@@ -340,7 +348,7 @@ class App extends Component {
         <button className="button insertion" onClick={this.insertionSort}>INSERTION SORT</button>
         <button className="button selection" onClick={this.selectionSort}>SELECTION SORT</button>
         <button className="button quick" onClick={this.quickSort}>QUICK SORT</button>
-        <Graph list={list} pointer={this.state.pointer} rightPointer={this.state.rightPointer} rightIndex={this.state.rightIndex} sortRunning={this.state.sortRunning} />
+        <Graph rightPointer={this.state.rightPointer} />
         {
           sortRunning ? <button className="button stop" onClick={this.stopButton}>STOP</button>
           :
@@ -355,12 +363,18 @@ const mapStateToProps = state => ({
   list: state.sort.list,
   graphGenerated: state.sort.graphGenerated,
   sortRunning: state.sort.sortRunning,
+  stopClicked: state.sort.stopClicked,
+  leftPointer: state.sort.leftPointer,
+  rightPointer: state.sort.rightPointer,
 })
 
 const mapDispatchToProps = dispatch => ({
   generateGraph: () => dispatch(generateGraph()),
   updateGraph: array => dispatch(updateGraph(array)),
-  toggleSortRunning: status => dispatch(toggleSortRunning(status))
+  toggleSortRunning: status => dispatch(toggleSortRunning(status)),
+  toggleStopClicked: status => dispatch(toggleStopClicked(status)),
+  updateLeftPointer: idx => dispatch(updateLeftPointer(idx)),
+  updateRightPointer: idx => dispatch(updateRightPointer(idx))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

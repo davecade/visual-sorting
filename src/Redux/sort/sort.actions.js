@@ -8,7 +8,7 @@ export const generateGraph = () => ({
 
 export const updateGraph = graph => ({
     type: SortTypes.UPDATE_GRAPH,
-    payload: graph
+    payload: [...graph]
 })
 
 export const toggleSortRunning = status => ({
@@ -16,3 +16,18 @@ export const toggleSortRunning = status => ({
     payload: status
 })
 
+export const toggleStopClicked = status => ({
+    type: SortTypes.TOGGLE_STOP_CLICKED,
+    payload: status
+})
+
+
+export const updateLeftPointer = idx => ({
+    type: SortTypes.UPDATE_LEFT_POINTER,
+    payload: idx
+})
+
+export const updateRightPointer = idx => ({
+    type: SortTypes.UPDATE_RIGHT_POINTER,
+    payload: idx
+})
