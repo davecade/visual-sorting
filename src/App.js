@@ -2,6 +2,7 @@ import {React, Component } from 'react';
 import './App.scss';
 import Graph from './components/graph/graph.component'
 import BubbleSort from './sort-method/bubble-sort'
+import InsertionSort from './sort-method/insertion-sort'
 import { connect } from 'react-redux'
 import { 
   generateGraph,
@@ -22,57 +23,7 @@ class App extends Component {
     }
   }
 
-  // insertionSort = () => {
-  //   const { list, updateGraph, graphGenerated, sortRunning } = this.props
-
-  //   if(!sortRunning && graphGenerated) {
-
-  //     this.playSortingSound();
-
-  //     let array = list
-  //     let i = 0
-  //     let currentIdx = 0
-  //     let timeToIterate = true
-      
-  //     let started = setInterval(()=> {
-  //       if(sound.sorting.currentTime === sound.sorting.duration) {
-  //         sound.sorting.play()
-  //       }
-
-  //       if(array.length>1) {
-          
-  //         if(timeToIterate) {
-  //           i++;
-  //           currentIdx=i;
-  //           timeToIterate=false
-  //         }
-
-  //         if(currentIdx > 0 && (array[currentIdx] < array[currentIdx-1])) {
-  //           let temp = array[currentIdx]
-  //           array[currentIdx] = array[currentIdx-1]
-  //           array[currentIdx-1] = temp
-  //           currentIdx--;
-  //         } else {
-  //           timeToIterate = true
-  //         }
-  //       }
-  //       updateGraph(array)
-  //       this.setState({pointer: currentIdx, sortRunning: true})
-        
-
-  //       if(array.length===1 || i===array.length || this.state.stopClicked === true) {
-  //         console.log("CLEARED")
-  //         this.playFinishedSound();
-  //         clearInterval(started)
-  //         this.setState({sortRunning: false, stopClicked: false})
-  //       }
-
-  //     }, 50)
-
-  //   }
-
-  // }
-
+  
   // selectionSort = () => {
   //   if(!this.state.sortRunning && this.state.graphGenerated) {
   //     this.playSortingSound();
@@ -278,7 +229,7 @@ class App extends Component {
       <div className="App">
         <h1 className="title">VISUAL SORTING</h1>
         <BubbleSort stopClicked={this.state.stopClicked} setStopClickedToFalse={this.setStopClickedToFalse}/>
-        <button className="button insertion" onClick={this.insertionSort}>INSERTION SORT</button>
+        <InsertionSort stopClicked={this.state.stopClicked} setStopClickedToFalse={this.setStopClickedToFalse}/>
         <button className="button selection" onClick={this.selectionSort}>SELECTION SORT</button>
         <button className="button quick" onClick={this.quickSort}>QUICK SORT</button>
         <Graph rightPointer={this.state.rightPointer} />
