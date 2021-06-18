@@ -4,7 +4,6 @@ const INITIAL_STATE = {
     list: [],
     graphGenerated: false,
     sortRunning: false,
-    stopClicked: false,
     leftPointer: 0,
     rightPointer: null,
 }
@@ -29,12 +28,6 @@ const sortReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 sortRunning: action.payload,
-            }
-        
-        case SortTypes.TOGGLE_STOP_CLICKED:
-            return {
-                ...state,
-                stopClicked: action.payload,
             }
         
         case SortTypes.UPDATE_LEFT_POINTER:

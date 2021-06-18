@@ -16,11 +16,6 @@ export const toggleSortRunning = status => ({
     payload: status
 })
 
-export const toggleStopClicked = status => ({
-    type: SortTypes.TOGGLE_STOP_CLICKED,
-    payload: status
-})
-
 
 export const updateLeftPointer = idx => ({
     type: SortTypes.UPDATE_LEFT_POINTER,
