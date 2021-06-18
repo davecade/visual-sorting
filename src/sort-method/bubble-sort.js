@@ -1,16 +1,36 @@
+import {React, Component } from 'react';
 import { connect } from 'react-redux';
 import { sound, playSortingSound, playFinishedSound } from '../data/sound'
 import { 
     generateGraph,
     toggleSortRunning,
     updateGraph,
-    updateLeftPointer,
+    updateLeftPointer
   } from '../Redux/sort/sort.actions'
 
-const BubbleSort = ({stopClicked, setStopClickedToFalse, list, updateGraph, graphGenerated, sortRunning, updateLeftPointer, toggleSortRunning}) => {
+class BubbleSort extends Component {
+    constructor({stopClicked, ...props}) {
+      super(props)
+      this.state = {
+        stopClicked: stopClicked
+      }
+    }
 
-  const bubbleSortAlgo = () => {
+  componentWillReceiveProps({stopClicked}) {
+    this.setState({...this.state, stopClicked})
+  }
 
+  bubbleSortAlgo = () => {
+    const {
+      list,
+      updateGraph,
+      graphGenerated,
+      sortRunning,
+      updateLeftPointer,
+      toggleSortRunning,
+      setStopClickedToFalse,
+    } = this.props
+    
     if(!sortRunning && graphGenerated) {
       toggleSortRunning(true);
       playSortingSound()
@@ -19,7 +39,6 @@ const BubbleSort = ({stopClicked, setStopClickedToFalse, list, updateGraph, grap
       let count = array.length-1
       let i = 0;
       let finished
-      
       
       let started = setInterval(()=> {
 
@@ -44,15 +63,14 @@ const BubbleSort = ({stopClicked, setStopClickedToFalse, list, updateGraph, grap
         } else {
           i++
         }
-        console.log("STOP HERE: ", stopClicked)
+
         updateGraph(array);
         updateLeftPointer(i);
 
-        if(count===0 || (finished===true && i===0) || stopClicked) {
+        if(count===0 || (finished===true && i===0) || this.state.stopClicked) {
           console.log("CLEARED")
           playFinishedSound()
           clearInterval(started)
-          
           toggleSortRunning(false);
           setStopClickedToFalse()
         }
@@ -61,42 +79,12 @@ const BubbleSort = ({stopClicked, setStopClickedToFalse, list, updateGraph, grap
     }
   }
 
-
-  const bubbleSortAlgo2 = async () => {
-      const timer = ms => new Promise(res => setTimeout(res, ms))
-      let finished = false
-      let counter = 0
-      let array = list
-
-      if(!sortRunning && graphGenerated) {
-        toggleSortRunning(true);
-        playSortingSound()
-
-        while(!finished) {
-          finished = true
-          for(let i=0; i<array.length-1-counter; i++) {
-            if(array[i]>array[i+1]) {
-              let temp = array[i]
-              array[i] = array[i+1]
-              array[i+1] = temp
-              finished = false
-              await timer(50)
-              updateGraph(array);
-              updateLeftPointer(i+1);
-            }
-          }
-          counter++;
-        }
-      }
-
-        console.log("CLEARED")
-        playFinishedSound()
-        toggleSortRunning(false);
-        setStopClickedToFalse()
-  
+  render() {
+    return (
+      <button className="button bubble" onClick={this.bubbleSortAlgo}>BUBBLE SORT</button>
+    )
   }
 
-    return <button className="button bubble" onClick={bubbleSortAlgo2}>BUBBLE SORT</button>
 }
 
 

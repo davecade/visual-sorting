@@ -265,7 +265,7 @@ class App extends Component {
     this.setState({stopClicked: true})
   }
 
-  setStopClickedToFalse =() => {
+  setStopClickedToFalse = () => {
     this.setState({stopClicked: false})
   }
 
