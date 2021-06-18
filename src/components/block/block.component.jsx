@@ -24,7 +24,8 @@ const Block = ({currentIndex, leftPointer, rightPointer, sortRunning}) => {
 
 const mapStateToProps = state => ({
     sortRunning: state.sort.sortRunning,
-    leftPointer: state.sort.leftPointer
+    leftPointer: state.sort.leftPointer,
+    rightPointer: state.sort.rightPointer
 })
 
 export default connect(mapStateToProps)(Block);

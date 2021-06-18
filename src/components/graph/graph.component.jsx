@@ -3,7 +3,7 @@ import './graph.styles.scss'
 import Column from '../column/column.component'
 import { connect } from 'react-redux'
 
-const Graph = ({list, rightPointer}) => {
+const Graph = ({list}) => {
 
     return (
         <div className="graph">  
@@ -13,7 +13,6 @@ const Graph = ({list, rightPointer}) => {
                         key={index}
                         currentIndex={index}
                         number={item}
-                        rightPointer={rightPointer}
                     />
                 ))
             }

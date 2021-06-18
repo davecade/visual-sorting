@@ -2,7 +2,7 @@ import React from 'react'
 import './column.styles.scss'
 import Block from '../block/block.component'
 
-const Column = ({number, ...otherProps}) => {
+const Column = ({number, currentIndex}) => {
     let count = new Array(number).fill(0)
 
     return (
@@ -11,7 +11,7 @@ const Column = ({number, ...otherProps}) => {
                 count.map((item, index) => (
                     <Block
                         key={index}
-                        {...otherProps}
+                        currentIndex={currentIndex}
                     />
                 ))
             }
