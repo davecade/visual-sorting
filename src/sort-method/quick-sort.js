@@ -22,10 +22,16 @@ class QuickSort extends Component {
     this.setState({...this.state, stopClicked})
   }
 
-  clicked = () => {
-      if(this.state.stopClicked) {
-          return true;
-      }
+  updateState = (array, left, right) => {
+    const {
+      updateGraph,
+      updateLeftPointer,
+      updateRightPointer,
+    } = this.props
+
+    updateGraph(array);
+    updateLeftPointer(left);
+    updateRightPointer(right);
   }
 
   runQuickSort = async () => {
@@ -65,11 +71,6 @@ class QuickSort extends Component {
   swap = async (i, j, array) => {
       const timer = ms => new Promise(res => setTimeout(res, ms))
       const { speed } = this.state
-      const {
-          updateGraph,
-          updateLeftPointer,
-          updateRightPointer,
-      } = this.props
 
       if(sound.sorting.currentTime === sound.sorting.duration) {
           playSortingSound()
@@ -77,37 +78,28 @@ class QuickSort extends Component {
 
       let temp = array[j];
       array[j] = array[i];
-      updateGraph(array);
-      updateLeftPointer(i);
-      updateRightPointer(j)
+      this.updateState(array, i, j)
+
       await timer(speed);
-      if(this.clicked()) return
+      if(this.state.stopClicked) return
       array[i] = temp
-      updateGraph(array);
-      updateLeftPointer(i);
-      updateRightPointer(j)
+      this.updateState(array, i, j)
+
       await timer(speed);
-      if(this.clicked()) return
+      if(this.state.stopClicked) return
   }
 
   quickSortHelper = async (array, startIdx, endIdx) => {
       const timer = ms => new Promise(res => setTimeout(res, ms))
       const { speed } = this.state
-      const {
-        updateGraph,
-        updateLeftPointer,
-        updateRightPointer,
-    } = this.props
 
       if(startIdx >= endIdx) return;
       const pivotIdx = startIdx;
       let leftIdx = startIdx+1;
       let rightIdx = endIdx;
-      updateGraph(array);
-      updateLeftPointer(leftIdx);
-      updateRightPointer(rightIdx)
+      this.updateState(array, leftIdx, rightIdx)
       await timer(speed);
-      if(this.clicked()) return
+      if(this.state.stopClicked) return
 
       while(rightIdx >= leftIdx) {
 
@@ -115,62 +107,50 @@ class QuickSort extends Component {
             playSortingSound()
         }
 
-        if(this.clicked()) return
+        if(this.state.stopClicked) return
         if(array[leftIdx] > array[pivotIdx] && array[rightIdx] < array[pivotIdx]) {
-          if(this.clicked()) return
+          if(this.state.stopClicked) return
           this.swap(leftIdx, rightIdx, array)
         }
 
         if(array[leftIdx] <= array[pivotIdx]) leftIdx++;
-        updateGraph(array);
-        updateLeftPointer(leftIdx);
-        updateRightPointer(rightIdx)
+        this.updateState(array, leftIdx, rightIdx)
         await timer(speed);
-        if(this.clicked()) return
+        if(this.state.stopClicked) return
 
         if(array[rightIdx]>= array[pivotIdx]) rightIdx--;
-        updateGraph(array);
-        updateLeftPointer(leftIdx);
-        updateRightPointer(rightIdx)
+        this.updateState(array, leftIdx, rightIdx)
         await timer(speed);
-        if(this.clicked()) return
+        if(this.state.stopClicked) return
       }
       this.swap(pivotIdx, rightIdx, array);
       const leftSubarrayIsSmaller = rightIdx - 1 - startIdx < endIdx - (rightIdx + 1);
       if(leftSubarrayIsSmaller) {
         await this.quickSortHelper(array, startIdx, rightIdx-1);
-        if(this.clicked()) return
+        if(this.state.stopClicked) return
 
-        updateGraph(array);
-        updateLeftPointer(leftIdx);
-        updateRightPointer(rightIdx)
+        this.updateState(array, leftIdx, rightIdx)
         await timer(speed);
 
-        if(this.clicked()) return
+        if(this.state.stopClicked) return
 
         await this.quickSortHelper(array, rightIdx + 1, endIdx);
-        if(this.clicked()) return
-        updateGraph(array);
-        updateLeftPointer(leftIdx);
-        updateRightPointer(rightIdx)
+        if(this.state.stopClicked) return
+        this.updateState(array, leftIdx, rightIdx)
         await timer(speed);
-        if(this.clicked()) return
+        if(this.state.stopClicked) return
 
       } else {
         await this.quickSortHelper(array, rightIdx+1, endIdx);
-        if(this.clicked()) return
-        updateGraph(array);
-        updateLeftPointer(leftIdx);
-        updateRightPointer(rightIdx)
+        if(this.state.stopClicked) return
+        this.updateState(array, leftIdx, rightIdx)
         await timer(speed);
 
         await this.quickSortHelper(array, startIdx, rightIdx-1);
-        if(this.clicked()) return
-        updateGraph(array);
-        updateLeftPointer(leftIdx);
-        updateRightPointer(rightIdx)
+        if(this.state.stopClicked) return
+        this.updateState(array, leftIdx, rightIdx)
         await timer(speed);
-        if(this.clicked()) return
+        if(this.state.stopClicked) return
       }
   }
 
