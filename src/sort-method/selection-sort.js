@@ -44,7 +44,8 @@ class SelectionSort extends Component {
         let currentIdx
         let iterated = true;
         let readyToSwap = false
-        let sorted = checkSorted()
+        //let sorted = checkSorted()
+        let sorted = false
 
         if(!sorted) {
             let started = setInterval(()=> {

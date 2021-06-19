@@ -43,7 +43,8 @@ class QuickSort extends Component {
         if(!sortRunning && graphGenerated) {
             toggleSortRunning(true);
             playSortingSound()
-            let sorted = checkSorted()
+            //let sorted = checkSorted()
+            let sorted = false
             let array = list
 
             if(!sorted) {

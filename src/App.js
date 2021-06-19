@@ -26,6 +26,7 @@ class App extends Component {
   }
 
   checkSorted = () => {
+    const timer = ms => new Promise(res => setTimeout(res, ms))
     const { list } = this.props
     let array = list
     let current = 0
@@ -48,6 +49,7 @@ class App extends Component {
         playFinishedSound()
         clearInterval(started)
         toggleSortRunning(false)
+        this.setStopClickedToFalse()
       }
     }, 50)
     return true
