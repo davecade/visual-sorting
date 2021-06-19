@@ -21,7 +21,7 @@ class BubbleSort extends Component {
     this.setState({...this.state, stopClicked})
   }
 
-  bubbleSortAlgo = () => {
+  runBubbleSort = () => {
     const { speed } = this.state
     const {
       list,
@@ -83,7 +83,7 @@ class BubbleSort extends Component {
 
   render() {
     return (
-      <button className="button bubble" onClick={this.bubbleSortAlgo}>BUBBLE SORT</button>
+      <button className="button bubble" onClick={this.runBubbleSort}>BUBBLE SORT</button>
     )
   }
 

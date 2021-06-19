@@ -21,7 +21,7 @@ class InsertionSort extends Component {
     this.setState({...this.state, stopClicked})
   }
 
-  insertionSortAlgo = () => {
+  runInsertionSort = () => {
     const { speed } = this.state
     const {
         list,
@@ -68,7 +68,7 @@ class InsertionSort extends Component {
             updateLeftPointer(currentIdx);
             
 
-            if(array.length===1 || i===array.length || this.state.stopClicked === true) {
+            if(array.length===1 || i===array.length || this.state.stopClicked) {
                 playFinishedSound()
                 clearInterval(started)
                 toggleSortRunning(false);
@@ -86,7 +86,7 @@ class InsertionSort extends Component {
 
   render() {
     return (
-        <button className="button insertion" onClick={this.insertionSortAlgo}>INSERTION SORT</button>
+        <button className="button insertion" onClick={this.runInsertionSort}>INSERTION SORT</button>
     )
   }
 

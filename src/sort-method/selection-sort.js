@@ -22,8 +22,8 @@ class SelectionSort extends Component {
   }
 
 
-  selectionSortAlgo = () => {
-      const { speed } = this.state
+  runSelectionSort = () => {
+    const { speed } = this.state
     const {
       list,
       updateGraph,
@@ -32,7 +32,7 @@ class SelectionSort extends Component {
       updateLeftPointer,
       toggleSortRunning,
       setStopClickedToFalse,
-      checkSorted
+      checkIfSorted
     } = this.props
     
     if(!sortRunning && graphGenerated) {
@@ -44,10 +44,10 @@ class SelectionSort extends Component {
         let currentIdx
         let iterated = true;
         let readyToSwap = false
-        //let sorted = checkSorted()
-        let sorted = false
+        let sorted = checkIfSorted()
 
         if(!sorted) {
+
             let started = setInterval(()=> {
                 if(sound.sorting.currentTime === sound.sorting.duration) {
                     playSortingSound()
@@ -110,7 +110,7 @@ class SelectionSort extends Component {
 
   render() {
     return (
-        <button className="button selection" onClick={this.selectionSortAlgo}>SELECTION SORT</button>
+        <button className="button selection" onClick={this.runSelectionSort}>SELECTION SORT</button>
     )
   }
 

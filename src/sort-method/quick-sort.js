@@ -22,73 +22,73 @@ class QuickSort extends Component {
     this.setState({...this.state, stopClicked})
   }
 
-    clicked = () => {
-        if(this.state.stopClicked) {
-            return true;
-        }
-    }
+  clicked = () => {
+      if(this.state.stopClicked) {
+          return true;
+      }
+  }
 
-    quickSortAlgo = async () => {
-        const {
-            list,
-            updateGraph,
-            graphGenerated,
-            sortRunning,
-            updateRightPointer,
-            toggleSortRunning,
-            setStopClickedToFalse,
-            checkSorted
-        } = this.props
+  runQuickSort = async () => {
+      const {
+          list,
+          updateGraph,
+          graphGenerated,
+          sortRunning,
+          updateRightPointer,
+          toggleSortRunning,
+          setStopClickedToFalse,
+          checkIfSorted
+      } = this.props
 
-        if(!sortRunning && graphGenerated) {
-            toggleSortRunning(true);
-            playSortingSound()
-            //let sorted = checkSorted()
-            let sorted = false
-            let array = list
+      if(!sortRunning && graphGenerated) {
+          toggleSortRunning(true);
+          playSortingSound()
+          let array = list
+          let sorted = checkIfSorted()
 
-            if(!sorted) {
-                await this.quickSortHelper(array, 0, array.length-1)
-                updateGraph(array);
-                sorted=true
 
-                if(sorted || this.state.stopClicked) {
-                    playFinishedSound()
-                    updateRightPointer(null)
-                    toggleSortRunning(false);
-                    setStopClickedToFalse()
-                }
-            }
-        }
-    }
+          if(!sorted) {
+              await this.quickSortHelper(array, 0, array.length-1)
+              updateGraph(array);
+              sorted=true
 
-    swap = async (i, j, array) => {
-        const timer = ms => new Promise(res => setTimeout(res, ms))
-        const { speed } = this.state
-        const {
-            updateGraph,
-            updateLeftPointer,
-            updateRightPointer,
-        } = this.props
+              if(sorted || this.state.stopClicked) {
+                  playFinishedSound()
+                  updateRightPointer(null)
+                  toggleSortRunning(false);
+                  setStopClickedToFalse()
+              }
+          }
+      }
+  }
 
-        if(sound.sorting.currentTime === sound.sorting.duration) {
-            playSortingSound()
-        }
+  swap = async (i, j, array) => {
+      const timer = ms => new Promise(res => setTimeout(res, ms))
+      const { speed } = this.state
+      const {
+          updateGraph,
+          updateLeftPointer,
+          updateRightPointer,
+      } = this.props
 
-        let temp = array[j];
-        array[j] = array[i];
-        updateGraph(array);
-        updateLeftPointer(i);
-        updateRightPointer(j)
-        await timer(speed);
-        if(this.clicked()) return
-        array[i] = temp
-        updateGraph(array);
-        updateLeftPointer(i);
-        updateRightPointer(j)
-        await timer(speed);
-        if(this.clicked()) return
-    }
+      if(sound.sorting.currentTime === sound.sorting.duration) {
+          playSortingSound()
+      }
+
+      let temp = array[j];
+      array[j] = array[i];
+      updateGraph(array);
+      updateLeftPointer(i);
+      updateRightPointer(j)
+      await timer(speed);
+      if(this.clicked()) return
+      array[i] = temp
+      updateGraph(array);
+      updateLeftPointer(i);
+      updateRightPointer(j)
+      await timer(speed);
+      if(this.clicked()) return
+  }
 
   quickSortHelper = async (array, startIdx, endIdx) => {
       const timer = ms => new Promise(res => setTimeout(res, ms))
@@ -176,7 +176,7 @@ class QuickSort extends Component {
 
   render() {
     return (
-        <button className="button quick" onClick={this.quickSortAlgo}>QUICK SORT</button>
+        <button className="button quick" onClick={this.runQuickSort}>QUICK SORT</button>
     )
   }
 

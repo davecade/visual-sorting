@@ -21,15 +21,23 @@ class App extends Component {
     super(props)
 
     this.state = {
-      stopClicked: false
+      stopClicked: false,
+      speed: 50
     }
   }
 
-  checkSorted = () => {
-    const timer = ms => new Promise(res => setTimeout(res, ms))
-    const { list } = this.props
+  checkIfSorted = () => {
+    const { speed } = this.state
+    const {
+      list,
+      sortRunning,
+      graphGenerated,
+      toggleSortRunning,
+      updateLeftPointer
+    } = this.props
     let array = list
     let current = 0
+    
 
     for(let i = 0; i < array.length-1; i++) {
       if(array[i] > array[i+1]) {
@@ -37,21 +45,24 @@ class App extends Component {
       }
     }
 
-    toggleSortRunning(true)
-    playSortingSound()
+    if(!sortRunning && graphGenerated) {
+      toggleSortRunning(true)
+      playSortingSound()
 
-    let started = setInterval(()=> {
-      current++
-      updateLeftPointer(current)
-      updateGraph(array)
+      let started = setInterval(()=> {
+        current++
+        updateLeftPointer(current)
+        updateGraph(array)
+  
+        if(current===array.length) {
+          playFinishedSound()
+          clearInterval(started)
+          toggleSortRunning(false)
+          this.setStopClickedToFalse()
+        }
+      }, speed)
+    }
 
-      if(current===array.length) {
-        playFinishedSound()
-        clearInterval(started)
-        toggleSortRunning(false)
-        this.setStopClickedToFalse()
-      }
-    }, 50)
     return true
   }
 
@@ -73,8 +84,8 @@ class App extends Component {
         <h1 className="title">VISUAL SORTING</h1>
         <BubbleSort stopClicked={this.state.stopClicked} setStopClickedToFalse={this.setStopClickedToFalse}/>
         <InsertionSort stopClicked={this.state.stopClicked} setStopClickedToFalse={this.setStopClickedToFalse}/>
-        <SelectionSort stopClicked={this.state.stopClicked} setStopClickedToFalse={this.setStopClickedToFalse} checkSorted={this.checkSorted}/>
-        <QuickSort stopClicked={this.state.stopClicked} setStopClickedToFalse={this.setStopClickedToFalse} checkSorted={this.checkSorted}/>
+        <SelectionSort stopClicked={this.state.stopClicked} setStopClickedToFalse={this.setStopClickedToFalse} checkIfSorted={this.checkIfSorted}/>
+        <QuickSort stopClicked={this.state.stopClicked} setStopClickedToFalse={this.setStopClickedToFalse} checkIfSorted={this.checkIfSorted}/>
         <Graph rightPointer={this.state.rightPointer} />
         {
           sortRunning ? <button className="button stop" onClick={this.stopButton}>STOP</button>
@@ -89,6 +100,7 @@ class App extends Component {
 const mapStateToProps = state => ({
   list: state.sort.list,
   sortRunning: state.sort.sortRunning,
+  graphGenerated: state.sort.graphGenerated
 })
 
 const mapDispatchToProps = dispatch => ({
