@@ -12,7 +12,8 @@ class SelectionSort extends Component {
     constructor({stopClicked, ...props}) {
       super(props)
       this.state = {
-        stopClicked: stopClicked
+        stopClicked: stopClicked,
+        speed: 50
       }
     }
 
@@ -22,6 +23,7 @@ class SelectionSort extends Component {
 
 
   selectionSortAlgo = () => {
+      const { speed } = this.state
     const {
       list,
       updateGraph,
@@ -99,7 +101,7 @@ class SelectionSort extends Component {
                     toggleSortRunning(false);
                     setStopClickedToFalse()
                 }
-            }, 50)
+            }, speed)
         }
 
     }

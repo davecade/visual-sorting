@@ -12,7 +12,8 @@ class BubbleSort extends Component {
     constructor({stopClicked, ...props}) {
       super(props)
       this.state = {
-        stopClicked: stopClicked
+        stopClicked: stopClicked,
+        speed: 50
       }
     }
 
@@ -21,6 +22,7 @@ class BubbleSort extends Component {
   }
 
   bubbleSortAlgo = () => {
+    const { speed } = this.state
     const {
       list,
       updateGraph,
@@ -75,7 +77,7 @@ class BubbleSort extends Component {
           setStopClickedToFalse()
         }
 
-      }, 50)
+      }, speed)
     }
   }
 

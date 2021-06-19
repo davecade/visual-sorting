@@ -12,7 +12,8 @@ class InsertionSort extends Component {
     constructor({stopClicked, ...props}) {
       super(props)
       this.state = {
-        stopClicked: stopClicked
+        stopClicked: stopClicked,
+        speed: 50
       }
     }
 
@@ -21,6 +22,7 @@ class InsertionSort extends Component {
   }
 
   insertionSortAlgo = () => {
+    const { speed } = this.state
     const {
         list,
         updateGraph,
@@ -73,7 +75,7 @@ class InsertionSort extends Component {
                 setStopClickedToFalse()
             }
 
-        }, 50)
+        }, speed)
 
     }
 

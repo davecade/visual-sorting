@@ -13,7 +13,8 @@ class QuickSort extends Component {
     constructor({stopClicked, ...props}) {
       super(props)
       this.state = {
-        stopClicked: stopClicked
+        stopClicked: stopClicked,
+        speed: 30
       }
     }
 
@@ -62,6 +63,7 @@ class QuickSort extends Component {
 
     swap = async (i, j, array) => {
         const timer = ms => new Promise(res => setTimeout(res, ms))
+        const { speed } = this.state
         const {
             updateGraph,
             updateLeftPointer,
@@ -77,24 +79,25 @@ class QuickSort extends Component {
         updateGraph(array);
         updateLeftPointer(i);
         updateRightPointer(j)
-        await timer(30);
+        await timer(speed);
         if(this.clicked()) return
         array[i] = temp
         updateGraph(array);
         updateLeftPointer(i);
         updateRightPointer(j)
-        await timer(30);
+        await timer(speed);
         if(this.clicked()) return
     }
 
   quickSortHelper = async (array, startIdx, endIdx) => {
       const timer = ms => new Promise(res => setTimeout(res, ms))
+      const { speed } = this.state
       const {
         updateGraph,
         updateLeftPointer,
         updateRightPointer,
     } = this.props
-    
+
       if(startIdx >= endIdx) return;
       const pivotIdx = startIdx;
       let leftIdx = startIdx+1;
@@ -102,7 +105,7 @@ class QuickSort extends Component {
       updateGraph(array);
       updateLeftPointer(leftIdx);
       updateRightPointer(rightIdx)
-      await timer(30);
+      await timer(speed);
       if(this.clicked()) return
 
       while(rightIdx >= leftIdx) {
@@ -121,14 +124,14 @@ class QuickSort extends Component {
         updateGraph(array);
         updateLeftPointer(leftIdx);
         updateRightPointer(rightIdx)
-        await timer(30);
+        await timer(speed);
         if(this.clicked()) return
 
         if(array[rightIdx]>= array[pivotIdx]) rightIdx--;
         updateGraph(array);
         updateLeftPointer(leftIdx);
         updateRightPointer(rightIdx)
-        await timer(30);
+        await timer(speed);
         if(this.clicked()) return
       }
       this.swap(pivotIdx, rightIdx, array);
@@ -140,7 +143,7 @@ class QuickSort extends Component {
         updateGraph(array);
         updateLeftPointer(leftIdx);
         updateRightPointer(rightIdx)
-        await timer(30);
+        await timer(speed);
 
         if(this.clicked()) return
 
@@ -149,7 +152,7 @@ class QuickSort extends Component {
         updateGraph(array);
         updateLeftPointer(leftIdx);
         updateRightPointer(rightIdx)
-        await timer(30);
+        await timer(speed);
         if(this.clicked()) return
 
       } else {
@@ -158,14 +161,14 @@ class QuickSort extends Component {
         updateGraph(array);
         updateLeftPointer(leftIdx);
         updateRightPointer(rightIdx)
-        await timer(30);
+        await timer(speed);
 
         await this.quickSortHelper(array, startIdx, rightIdx-1);
         if(this.clicked()) return
         updateGraph(array);
         updateLeftPointer(leftIdx);
         updateRightPointer(rightIdx)
-        await timer(30);
+        await timer(speed);
         if(this.clicked()) return
       }
   }
