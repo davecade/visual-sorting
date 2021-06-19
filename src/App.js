@@ -6,7 +6,13 @@ import InsertionSort from './sort-method/insertion-sort'
 import SelectionSort from './sort-method/selection-sort';
 import QuickSort from './sort-method/quick-sort';
 import { connect } from 'react-redux'
-import { generateGraph } from './Redux/sort/sort.actions'
+import { playSortingSound, playFinishedSound } from './sound-utils/sound'
+import {
+  generateGraph,
+  toggleSortRunning,
+  updateLeftPointer,
+  updateGraph
+} from './Redux/sort/sort.actions'
 
 //[9, 16, 17, 14, 2, 16, 10, 16, 5, 5, 8, 14, 15, 9, 11, 4, 16, 19, 0, 9, 5, 6, 10, 18, 17],
 
@@ -30,14 +36,18 @@ class App extends Component {
       }
     }
 
+    toggleSortRunning(true)
+    playSortingSound()
+
     let started = setInterval(()=> {
       current++
-      this.setState({list: array, pointer: current, sortRunning: true})
+      updateLeftPointer(current)
+      updateGraph(array)
 
       if(current===array.length) {
-        this.playFinishedSound();
+        playFinishedSound()
         clearInterval(started)
-        this.setState({sortRunning: false})
+        toggleSortRunning(false)
       }
     }, 50)
     return true
@@ -81,6 +91,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   generateGraph: () => dispatch(generateGraph()),
+  toggleSortRunning: status => dispatch(toggleSortRunning(status)),
+  updateLeftPointer: idx => dispatch(updateLeftPointer(idx)),
+  updateGraph: array => dispatch(updateGraph(array)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
