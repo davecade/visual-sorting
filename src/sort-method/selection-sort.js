@@ -51,9 +51,11 @@ class SelectionSort extends Component {
                 }
 
                 if(iterated===true) {
-                currentIdx = startingIdx
-                smallestNumIdx = startingIdx
-                iterated = false
+                    currentIdx = startingIdx
+                    smallestNumIdx = startingIdx
+                    iterated = false
+                    updateGraph(array);
+                    updateLeftPointer(currentIdx);
                 }
 
                 if(currentIdx === startingIdx) {
@@ -66,24 +68,25 @@ class SelectionSort extends Component {
                     if(array[currentIdx] < array[smallestNumIdx]) {
                     smallestNumIdx = currentIdx
                     }
-
-                    currentIdx++;
                     updateGraph(array);
                     updateLeftPointer(currentIdx);
+                    currentIdx++;
+
                 } else {
                     
                     if(readyToSwap) {
                     let temp = array[startingIdx];
                     array[startingIdx] = array[smallestNumIdx];
                     array[smallestNumIdx] = temp;
+                    updateGraph(array);
+                    updateLeftPointer(currentIdx);
                     startingIdx++;
                     iterated = true
                     updateGraph(array);
                     updateLeftPointer(startingIdx);
                     readyToSwap = false
                     } else {
-                    updateGraph(array);
-                    updateLeftPointer(currentIdx);
+
                     readyToSwap = true
                     }
                     
