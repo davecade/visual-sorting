@@ -57,44 +57,37 @@ class SelectionSort extends Component {
                     currentIdx = startingIdx
                     smallestNumIdx = startingIdx
                     iterated = false
-                    updateGraph(array);
-                    updateLeftPointer(currentIdx);
                 }
 
                 if(currentIdx === startingIdx) {
                     currentIdx++
-                    updateGraph(array);
-                    updateLeftPointer(startingIdx);
                 } else {
-                if(currentIdx < array.length) {
-                
-                    if(array[currentIdx] < array[smallestNumIdx]) {
-                    smallestNumIdx = currentIdx
-                    }
-                    updateGraph(array);
-                    updateLeftPointer(currentIdx);
-                    currentIdx++;
+                  if(currentIdx < array.length) {
+                  
+                      if(array[currentIdx] < array[smallestNumIdx]) {
+                      smallestNumIdx = currentIdx
+                      }
+                      currentIdx++;
 
-                } else {
-                    
-                    if(readyToSwap) {
-                    let temp = array[startingIdx];
-                    array[startingIdx] = array[smallestNumIdx];
-                    array[smallestNumIdx] = temp;
-                    updateGraph(array);
-                    updateLeftPointer(currentIdx);
-                    startingIdx++;
-                    iterated = true
-                    updateGraph(array);
-                    updateLeftPointer(startingIdx);
-                    readyToSwap = false
-                    } else {
+                  } else {
+                      
+                      if(readyToSwap) {
+                      let temp = array[startingIdx];
+                      array[startingIdx] = array[smallestNumIdx];
+                      array[smallestNumIdx] = temp;
+                      startingIdx++;
+                      iterated = true
+                      readyToSwap = false
+                      } else {
 
-                    readyToSwap = true
-                    }
-                    
+                      readyToSwap = true
+                      }
+                      
+                  }
                 }
-                }
+
+                updateGraph(array);
+                updateLeftPointer(currentIdx);
                 
                 if(startingIdx===array.length || sorted || this.state.stopClicked) {
                     playFinishedSound()
