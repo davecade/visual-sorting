@@ -1,6 +1,6 @@
 import {React, Component } from 'react';
 import { connect } from 'react-redux';
-import { sound, playSortingSound, playFinishedSound } from '../data/sound'
+import { sound, playSortingSound, playFinishedSound } from '../sound-utils/sound'
 import { 
     generateGraph,
     toggleSortRunning,
