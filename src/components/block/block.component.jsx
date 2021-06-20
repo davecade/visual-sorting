@@ -6,12 +6,12 @@ const Block = ({currentIndex, leftPointer, rightPointer, sortRunning}) => {
     
     const addHighlight = () => {
         if(sortRunning && currentIndex===leftPointer) {
-            return 'pointing'
+            return 'yellow-highlight'
         }
         
         if(rightPointer!==null) {
             if(sortRunning && currentIndex===rightPointer){
-                return 'right-pointing'
+                return 'orange-highlight'
             }
         }
 

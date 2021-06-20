@@ -66,7 +66,7 @@ class App extends Component {
     return true
   }
 
-  stopButton = () => {
+  stopButtonWasClicked = () => {
     this.setState({stopClicked: true})
   }
 
@@ -86,9 +86,9 @@ class App extends Component {
         <InsertionSort stopClicked={this.state.stopClicked} setStopClickedToFalse={this.setStopClickedToFalse}/>
         <SelectionSort stopClicked={this.state.stopClicked} setStopClickedToFalse={this.setStopClickedToFalse} checkIfSorted={this.checkIfSorted}/>
         <QuickSort stopClicked={this.state.stopClicked} setStopClickedToFalse={this.setStopClickedToFalse} checkIfSorted={this.checkIfSorted}/>
-        <Graph rightPointer={this.state.rightPointer} />
+        <Graph />
         {
-          sortRunning ? <button className="button stop" onClick={this.stopButton}>STOP</button>
+          sortRunning ? <button className="button stop" onClick={this.stopButtonWasClicked}>STOP</button>
           :
           <button className="button generate" onClick={generateGraph}>Generate Graph</button>
         }
