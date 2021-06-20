@@ -54,7 +54,7 @@ class App extends Component {
         updateLeftPointer(current)
         updateGraph(array)
   
-        if(current===array.length) {
+        if(current===array.length || this.state.stopClicked) {
           playFinishedSound()
           clearInterval(started)
           toggleSortRunning(false)
