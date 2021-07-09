@@ -40,6 +40,7 @@ class SelectionSort extends Component {
         let iterated = true;
         let readyToSwap = false
 
+
         let started = setInterval(()=> {
             if(sound.sorting.currentTime === sound.sorting.duration) {
                 playSortingSound()

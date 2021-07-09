@@ -1,5 +1,5 @@
 import { SortTypes } from './sort.types'
-import { createArray } from './sort.utils'
+import { createArray } from '../redux-utils/redux.utils'
 
 export const generateGraph = () => ({
     type: SortTypes.GENERATE_GRAPH,

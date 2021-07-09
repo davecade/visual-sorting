@@ -1,6 +1,7 @@
 import {React, Component } from 'react';
 import { connect } from 'react-redux';
 import { sound, playSortingSound, playFinishedSound } from '../sound-utils/sound'
+import { checkIfSorted } from './sort-utils/sort.utils'
 import { 
     generateGraph,
     toggleSortRunning,
@@ -40,24 +41,22 @@ class QuickSort extends Component {
           toggleSortRunning,
           stopSorting,
       } = this.props
-      
-      let sorted = false
 
       if(!sortRunning && graphGenerated) {
-          toggleSortRunning(true);
-          playSortingSound()
-          let array = list
-          
-          await this.quickSortHelper(array, 0, array.length-1)
-          updateGraph(array);
-          sorted=true
+        toggleSortRunning(true);
+        playSortingSound()
+        let array = list
+        
+        await this.quickSortHelper(array, 0, array.length-1)
+        updateGraph(array);
+        let sorted = true
 
-          if(sorted || this.props.stopButtonClicked) {
-              playFinishedSound()
-              updateRightPointer(null)
-              toggleSortRunning(false);
-              stopSorting(false)
-          }
+        if(sorted || this.props.stopButtonClicked) {
+            playFinishedSound()
+            updateRightPointer(null)
+            toggleSortRunning(false);
+            stopSorting(false)
+        }
       }
   }
 
