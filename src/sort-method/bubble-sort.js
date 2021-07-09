@@ -5,21 +5,17 @@ import {
     generateGraph,
     toggleSortRunning,
     updateGraph,
-    updateLeftPointer
+    updateLeftPointer,
+    stopSorting
   } from '../Redux/sort/sort.actions'
 
 class BubbleSort extends Component {
-    constructor({stopClicked, ...props}) {
+    constructor(props) {
       super(props)
       this.state = {
-        stopClicked: stopClicked,
         speed: 50
       }
     }
-
-  componentWillReceiveProps({stopClicked}) {
-    this.setState({...this.state, stopClicked})
-  }
 
   runBubbleSort = () => {
     const { speed } = this.state
@@ -30,10 +26,13 @@ class BubbleSort extends Component {
       sortRunning,
       updateLeftPointer,
       toggleSortRunning,
-      setStopClickedToFalse,
+      stopSorting
     } = this.props
     
+     
+    
     if(!sortRunning && graphGenerated) {
+      
       toggleSortRunning(true);
       playSortingSound()
 
@@ -43,7 +42,6 @@ class BubbleSort extends Component {
       let finished
       
       let started = setInterval(()=> {
-
         if(sound.sorting.currentTime === sound.sorting.duration) {
           playSortingSound()
         }
@@ -69,12 +67,12 @@ class BubbleSort extends Component {
         updateGraph(array);
         updateLeftPointer(i);
 
-        if(count===0 || (finished===true && i===0) || this.state.stopClicked) {
+        if(count===0 || (finished===true && i===0) || this.props.stopButtonClicked) {
           console.log("CLEARED")
           playFinishedSound()
           clearInterval(started)
           toggleSortRunning(false);
-          setStopClickedToFalse()
+          stopSorting(false)
         }
 
       }, speed)
@@ -95,6 +93,7 @@ const mapStateToProps = state => ({
     graphGenerated: state.sort.graphGenerated,
     sortRunning: state.sort.sortRunning,
     leftPointer: state.sort.leftPointer,
+    stopButtonClicked: state.sort.stopButtonClicked
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -102,6 +101,7 @@ const mapDispatchToProps = dispatch => ({
     updateGraph: array => dispatch(updateGraph(array)),
     toggleSortRunning: status => dispatch(toggleSortRunning(status)),
     updateLeftPointer: idx => dispatch(updateLeftPointer(idx)),
+    stopSorting: status => dispatch(stopSorting(status))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(BubbleSort);

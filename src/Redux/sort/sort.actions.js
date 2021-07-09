@@ -26,3 +26,8 @@ export const updateRightPointer = idx => ({
     type: SortTypes.UPDATE_RIGHT_POINTER,
     payload: idx
 })
+
+export const stopSorting = status => ({
+    type: SortTypes.STOP_SORTING,
+    payload: status
+})

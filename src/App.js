@@ -11,7 +11,8 @@ import {
   generateGraph,
   toggleSortRunning,
   updateLeftPointer,
-  updateGraph
+  updateGraph,
+  stopSorting
 } from './Redux/sort/sort.actions'
 
 //[9, 16, 17, 14, 2, 16, 10, 16, 5, 5, 8, 14, 15, 9, 11, 4, 16, 19, 0, 9, 5, 6, 10, 18, 17],
@@ -19,9 +20,7 @@ import {
 class App extends Component {
   constructor(props) {
     super(props)
-
     this.state = {
-      stopClicked: false,
       speed: 50
     }
   }
@@ -67,11 +66,7 @@ class App extends Component {
   }
 
   stopButtonWasClicked = () => {
-    this.setState({stopClicked: true})
-  }
-
-  setStopClickedToFalse = () => {
-    this.setState({stopClicked: false})
+    this.props.stopSorting(true)
   }
 
 
@@ -82,10 +77,10 @@ class App extends Component {
     return (
       <div className="App">
         <h1 className="title">VISUAL SORTING</h1>
-        <BubbleSort stopClicked={this.state.stopClicked} setStopClickedToFalse={this.setStopClickedToFalse}/>
-        <InsertionSort stopClicked={this.state.stopClicked} setStopClickedToFalse={this.setStopClickedToFalse}/>
-        <SelectionSort stopClicked={this.state.stopClicked} setStopClickedToFalse={this.setStopClickedToFalse} checkIfSorted={this.checkIfSorted}/>
-        <QuickSort stopClicked={this.state.stopClicked} setStopClickedToFalse={this.setStopClickedToFalse} checkIfSorted={this.checkIfSorted}/>
+        <BubbleSort/>
+        <InsertionSort />
+        <SelectionSort checkIfSorted={this.checkIfSorted}/>
+        <QuickSort checkIfSorted={this.checkIfSorted}/>
         <Graph />
         {
           sortRunning ? <button className="button stop" onClick={this.stopButtonWasClicked}>STOP</button>
@@ -108,6 +103,7 @@ const mapDispatchToProps = dispatch => ({
   toggleSortRunning: status => dispatch(toggleSortRunning(status)),
   updateLeftPointer: idx => dispatch(updateLeftPointer(idx)),
   updateGraph: array => dispatch(updateGraph(array)),
+  stopSorting: status => dispatch(stopSorting(status))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

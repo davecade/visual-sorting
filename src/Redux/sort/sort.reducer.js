@@ -6,6 +6,7 @@ const INITIAL_STATE = {
     sortRunning: false,
     leftPointer: 0,
     rightPointer: null,
+    stopButtonClicked: false
 }
 
 const sortReducer = (state = INITIAL_STATE, action) => {
@@ -40,6 +41,11 @@ const sortReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 rightPointer: action.payload,
+            }
+        case SortTypes.STOP_SORTING:
+            return {
+                ...state,
+                stopButtonClicked: action.payload,
             }
         
         default:

@@ -6,21 +6,17 @@ import {
     toggleSortRunning,
     updateGraph,
     updateLeftPointer,
-    updateRightPointer
+    updateRightPointer,
+    stopSorting
   } from '../Redux/sort/sort.actions'
 
 class QuickSort extends Component {
-    constructor({stopClicked, ...props}) {
+    constructor(props) {
       super(props)
       this.state = {
-        stopClicked: stopClicked,
         speed: 30
       }
     }
-
-  componentWillReceiveProps({stopClicked}) {
-    this.setState({...this.state, stopClicked})
-  }
 
   updateState = (array, left, right) => {
     const {
@@ -42,7 +38,7 @@ class QuickSort extends Component {
           sortRunning,
           updateRightPointer,
           toggleSortRunning,
-          setStopClickedToFalse,
+          stopSorting,
           checkIfSorted
       } = this.props
 
@@ -58,11 +54,11 @@ class QuickSort extends Component {
               updateGraph(array);
               sorted=true
 
-              if(sorted || this.state.stopClicked) {
+              if(sorted || this.props.stopButtonClicked) {
                   playFinishedSound()
                   updateRightPointer(null)
                   toggleSortRunning(false);
-                  setStopClickedToFalse()
+                  stopSorting(false)
               }
           }
       }
@@ -81,12 +77,12 @@ class QuickSort extends Component {
       this.updateState(array, i, j)
 
       await timer(speed);
-      if(this.state.stopClicked) return
+      if(this.props.stopButtonClicked) return
       array[i] = temp
       this.updateState(array, i, j)
 
       await timer(speed);
-      if(this.state.stopClicked) return
+      if(this.props.stopButtonClicked) return
   }
 
   quickSortHelper = async (array, startIdx, endIdx) => {
@@ -99,7 +95,7 @@ class QuickSort extends Component {
       let rightIdx = endIdx;
       this.updateState(array, leftIdx, rightIdx)
       await timer(speed);
-      if(this.state.stopClicked) return
+      if(this.props.stopButtonClicked) return
 
       while(rightIdx >= leftIdx) {
 
@@ -107,50 +103,50 @@ class QuickSort extends Component {
             playSortingSound()
         }
 
-        if(this.state.stopClicked) return
+        if(this.props.stopButtonClicked) return
         if(array[leftIdx] > array[pivotIdx] && array[rightIdx] < array[pivotIdx]) {
-          if(this.state.stopClicked) return
+          if(this.props.stopButtonClicked) return
           this.swap(leftIdx, rightIdx, array)
         }
 
         if(array[leftIdx] <= array[pivotIdx]) leftIdx++;
         this.updateState(array, leftIdx, rightIdx)
         await timer(speed);
-        if(this.state.stopClicked) return
+        if(this.props.stopButtonClicked) return
 
         if(array[rightIdx]>= array[pivotIdx]) rightIdx--;
         this.updateState(array, leftIdx, rightIdx)
         await timer(speed);
-        if(this.state.stopClicked) return
+        if(this.props.stopButtonClicked) return
       }
       this.swap(pivotIdx, rightIdx, array);
       const leftSubarrayIsSmaller = rightIdx - 1 - startIdx < endIdx - (rightIdx + 1);
       if(leftSubarrayIsSmaller) {
         await this.quickSortHelper(array, startIdx, rightIdx-1);
-        if(this.state.stopClicked) return
+        if(this.props.stopButtonClicked) return
 
         this.updateState(array, leftIdx, rightIdx)
         await timer(speed);
 
-        if(this.state.stopClicked) return
+        if(this.props.stopButtonClicked) return
 
         await this.quickSortHelper(array, rightIdx + 1, endIdx);
-        if(this.state.stopClicked) return
+        if(this.props.stopButtonClicked) return
         this.updateState(array, leftIdx, rightIdx)
         await timer(speed);
-        if(this.state.stopClicked) return
+        if(this.props.stopButtonClicked) return
 
       } else {
         await this.quickSortHelper(array, rightIdx+1, endIdx);
-        if(this.state.stopClicked) return
+        if(this.props.stopButtonClicked) return
         this.updateState(array, leftIdx, rightIdx)
         await timer(speed);
 
         await this.quickSortHelper(array, startIdx, rightIdx-1);
-        if(this.state.stopClicked) return
+        if(this.props.stopButtonClicked) return
         this.updateState(array, leftIdx, rightIdx)
         await timer(speed);
-        if(this.state.stopClicked) return
+        if(this.props.stopButtonClicked) return
       }
   }
 
@@ -168,7 +164,8 @@ const mapStateToProps = state => ({
     graphGenerated: state.sort.graphGenerated,
     sortRunning: state.sort.sortRunning,
     leftPointer: state.sort.leftPointer,
-    rightPointer: state.sort.rightPointer
+    rightPointer: state.sort.rightPointer,
+    stopButtonClicked: state.sort.stopButtonClicked
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -176,7 +173,8 @@ const mapDispatchToProps = dispatch => ({
     updateGraph: array => dispatch(updateGraph(array)),
     toggleSortRunning: status => dispatch(toggleSortRunning(status)),
     updateLeftPointer: idx => dispatch(updateLeftPointer(idx)),
-    updateRightPointer: idx => dispatch(updateRightPointer(idx))
+    updateRightPointer: idx => dispatch(updateRightPointer(idx)),
+    stopSorting: status => dispatch(stopSorting(status))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuickSort);

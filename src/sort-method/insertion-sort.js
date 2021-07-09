@@ -5,21 +5,18 @@ import {
     generateGraph,
     toggleSortRunning,
     updateGraph,
-    updateLeftPointer
+    updateLeftPointer,
+    stopSorting
   } from '../Redux/sort/sort.actions'
 
 class InsertionSort extends Component {
-    constructor({stopClicked, ...props}) {
+    constructor(props) {
       super(props)
       this.state = {
-        stopClicked: stopClicked,
         speed: 50
       }
     }
 
-  componentWillReceiveProps({stopClicked}) {
-    this.setState({...this.state, stopClicked})
-  }
 
   runInsertionSort = () => {
     const { speed } = this.state
@@ -30,7 +27,7 @@ class InsertionSort extends Component {
         sortRunning,
         updateLeftPointer,
         toggleSortRunning,
-        setStopClickedToFalse,
+        stopSorting,
       } = this.props
 
     if(!sortRunning && graphGenerated) {
@@ -68,11 +65,11 @@ class InsertionSort extends Component {
             updateLeftPointer(currentIdx);
             
 
-            if(array.length===1 || i===array.length || this.state.stopClicked) {
+            if(array.length===1 || i===array.length || this.props.stopButtonClicked) {
                 playFinishedSound()
                 clearInterval(started)
                 toggleSortRunning(false);
-                setStopClickedToFalse()
+                stopSorting(false)
             }
 
         }, speed)
@@ -98,6 +95,7 @@ const mapStateToProps = state => ({
     graphGenerated: state.sort.graphGenerated,
     sortRunning: state.sort.sortRunning,
     leftPointer: state.sort.leftPointer,
+    stopButtonClicked: state.sort.stopButtonClicked
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -105,6 +103,7 @@ const mapDispatchToProps = dispatch => ({
     updateGraph: array => dispatch(updateGraph(array)),
     toggleSortRunning: status => dispatch(toggleSortRunning(status)),
     updateLeftPointer: idx => dispatch(updateLeftPointer(idx)),
+    stopSorting: status => dispatch(stopSorting(status))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(InsertionSort);
