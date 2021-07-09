@@ -6,7 +6,6 @@ import InsertionSort from './sort-method/insertion-sort'
 import SelectionSort from './sort-method/selection-sort';
 import QuickSort from './sort-method/quick-sort';
 import { connect } from 'react-redux'
-import { playSortingSound, playFinishedSound } from './sound-utils/sound'
 import {
   generateGraph,
   toggleSortRunning,

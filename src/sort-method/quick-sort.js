@@ -1,7 +1,6 @@
 import {React, Component } from 'react';
 import { connect } from 'react-redux';
 import { sound, playSortingSound, playFinishedSound } from '../sound-utils/sound'
-import { checkIfSorted } from './sort-utils/sort.utils'
 import { 
     generateGraph,
     toggleSortRunning,
