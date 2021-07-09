@@ -25,10 +25,9 @@ class App extends Component {
     }
   }
 
-  handleClick = () => {
+  stopSorting = () => {
     this.props.stopSorting(true)
   }
-
 
   render() {
 
@@ -43,7 +42,7 @@ class App extends Component {
         <QuickSort />
         <Graph />
         {
-          sortRunning ? <button className="button stop" onClick={this.handleClick}>STOP</button>
+          sortRunning ? <button className="button stop" onClick={this.stopSorting}>STOP</button>
           :
           <button className="button generate" onClick={generateGraph}>Generate Graph</button>
         }
