@@ -39,27 +39,24 @@ class QuickSort extends Component {
           updateRightPointer,
           toggleSortRunning,
           stopSorting,
-          checkIfSorted
       } = this.props
+      
+      let sorted = false
 
       if(!sortRunning && graphGenerated) {
           toggleSortRunning(true);
           playSortingSound()
           let array = list
-          let sorted = checkIfSorted()
+          
+          await this.quickSortHelper(array, 0, array.length-1)
+          updateGraph(array);
+          sorted=true
 
-
-          if(!sorted) {
-              await this.quickSortHelper(array, 0, array.length-1)
-              updateGraph(array);
-              sorted=true
-
-              if(sorted || this.props.stopButtonClicked) {
-                  playFinishedSound()
-                  updateRightPointer(null)
-                  toggleSortRunning(false);
-                  stopSorting(false)
-              }
+          if(sorted || this.props.stopButtonClicked) {
+              playFinishedSound()
+              updateRightPointer(null)
+              toggleSortRunning(false);
+              stopSorting(false)
           }
       }
   }

@@ -28,7 +28,6 @@ class SelectionSort extends Component {
       updateLeftPointer,
       toggleSortRunning,
       stopSorting,
-      checkIfSorted
     } = this.props
     
     if(!sortRunning && graphGenerated) {
@@ -40,59 +39,56 @@ class SelectionSort extends Component {
         let currentIdx
         let iterated = true;
         let readyToSwap = false
-        let sorted = checkIfSorted()
 
-        if(!sorted) {
+        let started = setInterval(()=> {
+            if(sound.sorting.currentTime === sound.sorting.duration) {
+                playSortingSound()
+            }
 
-            let started = setInterval(()=> {
-                if(sound.sorting.currentTime === sound.sorting.duration) {
-                    playSortingSound()
-                }
+            if(iterated===true) {
+                currentIdx = startingIdx
+                smallestNumIdx = startingIdx
+                iterated = false
+            }
 
-                if(iterated===true) {
-                    currentIdx = startingIdx
-                    smallestNumIdx = startingIdx
-                    iterated = false
-                }
-
-                if(currentIdx === startingIdx) {
-                    currentIdx++
-                } else {
-                  if(currentIdx < array.length) {
-                  
-                      if(array[currentIdx] < array[smallestNumIdx]) {
-                      smallestNumIdx = currentIdx
-                      }
-                      currentIdx++;
-
-                  } else {
-                      
-                      if(readyToSwap) {
-                      let temp = array[startingIdx];
-                      array[startingIdx] = array[smallestNumIdx];
-                      array[smallestNumIdx] = temp;
-                      startingIdx++;
-                      iterated = true
-                      readyToSwap = false
-                      } else {
-
-                      readyToSwap = true
-                      }
-                      
+            if(currentIdx === startingIdx) {
+                currentIdx++
+            } else {
+              if(currentIdx < array.length) {
+              
+                  if(array[currentIdx] < array[smallestNumIdx]) {
+                  smallestNumIdx = currentIdx
                   }
-                }
+                  currentIdx++;
 
-                updateGraph(array);
-                updateLeftPointer(currentIdx);
-                
-                if(startingIdx===array.length || sorted || this.props.stopButtonClicked) {
-                    playFinishedSound()
-                    clearInterval(started)
-                    toggleSortRunning(false);
-                    stopSorting(false)
-                }
-            }, speed)
-        }
+              } else {
+                  
+                  if(readyToSwap) {
+                  let temp = array[startingIdx];
+                  array[startingIdx] = array[smallestNumIdx];
+                  array[smallestNumIdx] = temp;
+                  startingIdx++;
+                  iterated = true
+                  readyToSwap = false
+                  } else {
+
+                  readyToSwap = true
+                  }
+                  
+              }
+            }
+
+            updateGraph(array);
+            updateLeftPointer(currentIdx);
+            
+            if(startingIdx===array.length || this.props.stopButtonClicked) {
+                playFinishedSound()
+                clearInterval(started)
+                toggleSortRunning(false);
+                stopSorting(false)
+            }
+        }, speed)
+
 
     }
   }
