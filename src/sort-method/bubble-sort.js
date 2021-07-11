@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
+import useState from 'react-usestateref'
 import { connect } from 'react-redux';
 import { sound, playSortingSound, playFinishedSound } from '../sound-utils/sound'
 import { 
@@ -9,24 +10,28 @@ import {
     stopSorting
   } from '../Redux/sort/sort.actions'
 
-class BubbleSort extends Component {
-  
-  constructor(props) {
-    super(props)
-    this.state = {
-      speed: 50
-    }
-  }
+const BubbleSort = ({ list, updateGraph, graphGenerated, sortRunning, updateLeftPointer, toggleSortRunning, stopSorting, ...props} ) => {
+  const [ speed ] = useState(50)
+  const [ clicked, setClicked, refClicked ] = useState(false);
+  const { stopButtonClicked } = props
 
-  runBubbleSort = () => {
-    const { list, updateGraph, graphGenerated, sortRunning, updateLeftPointer, toggleSortRunning, stopSorting} = this.props
-    const { speed } = this.state
+  useEffect(() => {
+      if(stopButtonClicked) {
+        setClicked(stopButtonClicked)
+      }
+  }, [stopButtonClicked])
 
+
+
+  const runBubbleSort = () => {
+    //const { list, updateGraph, graphGenerated, sortRunning, updateLeftPointer, toggleSortRunning, stopSorting} = this.props
+    //const { speed } = this.state
+    
     if(!sortRunning && graphGenerated) {
       
       toggleSortRunning(true);
       playSortingSound()
-
+      
       let array = list
       let count = array.length-1
       let i = 0;
@@ -59,7 +64,7 @@ class BubbleSort extends Component {
         updateGraph(array);
         updateLeftPointer(i);
         
-        if(count===0 || (finished===true && i===0) || this.props.stopButtonClicked) {
+        if(count===0 || (finished===true && i===0) || refClicked.current) {
           console.log("CLEARED")
           playFinishedSound()
           clearInterval(started)
@@ -71,11 +76,9 @@ class BubbleSort extends Component {
     }
   }
 
-  render() {
-    return (
-      <button className="button bubble" onClick={this.runBubbleSort}>BUBBLE SORT</button>
-    )
-  }
+  return (
+    <button className="button bubble" onClick={() => runBubbleSort()}>BUBBLE SORT</button>
+  )
 }
 
 
