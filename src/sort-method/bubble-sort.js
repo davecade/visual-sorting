@@ -1,4 +1,4 @@
-import {React, Component } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { sound, playSortingSound, playFinishedSound } from '../sound-utils/sound'
 import { 
@@ -10,27 +10,18 @@ import {
   } from '../Redux/sort/sort.actions'
 
 class BubbleSort extends Component {
-    constructor(props) {
-      super(props)
-      this.state = {
-        speed: 50
-      }
+  
+  constructor(props) {
+    super(props)
+    this.state = {
+      speed: 50
     }
+  }
 
   runBubbleSort = () => {
+    const { list, updateGraph, graphGenerated, sortRunning, updateLeftPointer, toggleSortRunning, stopSorting} = this.props
     const { speed } = this.state
-    const {
-      list,
-      updateGraph,
-      graphGenerated,
-      sortRunning,
-      updateLeftPointer,
-      toggleSortRunning,
-      stopSorting
-    } = this.props
-    
-     
-    
+
     if(!sortRunning && graphGenerated) {
       
       toggleSortRunning(true);
@@ -40,8 +31,9 @@ class BubbleSort extends Component {
       let count = array.length-1
       let i = 0;
       let finished
-      
+
       let started = setInterval(()=> {
+
         if(sound.sorting.currentTime === sound.sorting.duration) {
           playSortingSound()
         }
@@ -66,7 +58,7 @@ class BubbleSort extends Component {
 
         updateGraph(array);
         updateLeftPointer(i);
-
+        
         if(count===0 || (finished===true && i===0) || this.props.stopButtonClicked) {
           console.log("CLEARED")
           playFinishedSound()
@@ -84,7 +76,6 @@ class BubbleSort extends Component {
       <button className="button bubble" onClick={this.runBubbleSort}>BUBBLE SORT</button>
     )
   }
-
 }
 
 

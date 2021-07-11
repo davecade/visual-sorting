@@ -26,6 +26,8 @@ class App extends Component {
 
   stopSorting = () => {
     this.props.stopSorting(true)
+    const { stopButtonClicked } = this.props
+    console.log("FIRST stopButtonClicked", stopButtonClicked)
   }
 
   render() {
@@ -53,7 +55,8 @@ class App extends Component {
 const mapStateToProps = state => ({
   list: state.sort.list,
   sortRunning: state.sort.sortRunning,
-  graphGenerated: state.sort.graphGenerated
+  graphGenerated: state.sort.graphGenerated,
+  stopButtonClicked: state.sort.stopButtonClicked
 })
 
 const mapDispatchToProps = dispatch => ({
