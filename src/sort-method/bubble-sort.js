@@ -18,8 +18,6 @@ const BubbleSort = ({stopButtonClicked, list, updateGraph, graphGenerated, sortR
   }, [stopButtonClicked])
 
   const runBubbleSort = () => {
-    //const { list, updateGraph, graphGenerated, sortRunning, updateLeftPointer, toggleSortRunning, stopSorting} = this.props
-    //const { speed } = this.state
     
     if(!sortRunning && graphGenerated) {
       toggleSortRunning(true);
@@ -76,7 +74,7 @@ const BubbleSort = ({stopButtonClicked, list, updateGraph, graphGenerated, sortR
   }
 
   return (
-    <button className="button bubble" onClick={() => runBubbleSort()}>BUBBLE SORT</button>
+    <button className="button bubble" onClick={runBubbleSort}>BUBBLE SORT</button>
   )
 }
 
