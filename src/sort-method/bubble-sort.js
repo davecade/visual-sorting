@@ -11,18 +11,12 @@ import {
 
 const BubbleSort = ({ list, updateGraph, graphGenerated, sortRunning, updateLeftPointer, toggleSortRunning, stopSorting, ...props} ) => {
   const [ speed ] = useState(50)
-  const [ clicked, setClicked ] = useState(false);
+  const setClicked = useState(false)[1];
   const { stopButtonClicked } = props
   
   useEffect(() => {
-      if(stopButtonClicked) {
-        setClicked(true)
-      } else {
-        setClicked(false)
-      }
+     setClicked(stopButtonClicked)
   }, [stopButtonClicked])
-
-
 
   const runBubbleSort = () => {
     //const { list, updateGraph, graphGenerated, sortRunning, updateLeftPointer, toggleSortRunning, stopSorting} = this.props
@@ -36,14 +30,15 @@ const BubbleSort = ({ list, updateGraph, graphGenerated, sortRunning, updateLeft
       let count = array.length-1
       let i = 0;
       let finished
+      let stopRunning
 
       let started = setInterval(()=> {
-        let clicked = false
+        
         setClicked(newState => {
-          clicked = newState
+          stopRunning = newState
           return newState
         })
-        
+
         if(sound.sorting.currentTime === sound.sorting.duration) {
           playSortingSound()
         }
@@ -69,7 +64,7 @@ const BubbleSort = ({ list, updateGraph, graphGenerated, sortRunning, updateLeft
         updateGraph(array);
         updateLeftPointer(i);
         
-        if(count===0 || (finished===true && i===0) || clicked) {
+        if(count===0 || (finished===true && i===0) || stopRunning) {
           console.log("CLEARED")
           playFinishedSound()
           clearInterval(started)
