@@ -10,8 +10,8 @@ import {
   } from '../Redux/sort/sort.actions'
 
 class InsertionSort extends Component {
-    constructor(props) {
-      super(props)
+    constructor() {
+      super()
       this.state = {
         speed: 50
       }

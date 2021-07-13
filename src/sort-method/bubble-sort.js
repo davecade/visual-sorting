@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import useState from 'react-usestateref'
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { sound, playSortingSound, playFinishedSound } from '../sound-utils/sound'
 import { 
@@ -12,12 +11,14 @@ import {
 
 const BubbleSort = ({ list, updateGraph, graphGenerated, sortRunning, updateLeftPointer, toggleSortRunning, stopSorting, ...props} ) => {
   const [ speed ] = useState(50)
-  const [ clicked, setClicked, refClicked ] = useState(false);
+  const [ clicked, setClicked ] = useState(false);
   const { stopButtonClicked } = props
-
+  
   useEffect(() => {
       if(stopButtonClicked) {
-        setClicked(stopButtonClicked)
+        setClicked(true)
+      } else {
+        setClicked(false)
       }
   }, [stopButtonClicked])
 
@@ -28,7 +29,6 @@ const BubbleSort = ({ list, updateGraph, graphGenerated, sortRunning, updateLeft
     //const { speed } = this.state
     
     if(!sortRunning && graphGenerated) {
-      
       toggleSortRunning(true);
       playSortingSound()
       
@@ -38,7 +38,12 @@ const BubbleSort = ({ list, updateGraph, graphGenerated, sortRunning, updateLeft
       let finished
 
       let started = setInterval(()=> {
-
+        let clicked = false
+        setClicked(newState => {
+          clicked = newState
+          return newState
+        })
+        
         if(sound.sorting.currentTime === sound.sorting.duration) {
           playSortingSound()
         }
@@ -64,7 +69,7 @@ const BubbleSort = ({ list, updateGraph, graphGenerated, sortRunning, updateLeft
         updateGraph(array);
         updateLeftPointer(i);
         
-        if(count===0 || (finished===true && i===0) || refClicked.current) {
+        if(count===0 || (finished===true && i===0) || clicked) {
           console.log("CLEARED")
           playFinishedSound()
           clearInterval(started)
