@@ -9,7 +9,7 @@ import {
     stopSorting
   } from '../Redux/sort/sort.actions'
 
-const BubbleSort = ({stopButtonClicked, list, updateGraph, graphGenerated, sortRunning, updateLeftPointer, toggleSortRunning, stopSorting, ...props} ) => {
+const BubbleSort = ({stopButtonClicked, list, updateGraph, graphGenerated, sortRunning, updateLeftPointer, toggleSortRunning, stopSorting} ) => {
   const [ speed ] = useState(50)
   const setClicked = useState(false)[1];
   
