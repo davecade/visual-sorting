@@ -5,11 +5,22 @@
 }
 
 .App {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   .title {
     margin: 2rem 0;
     color: rgb(186, 186, 250);
+  }
+
+  .buttons-container{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
   }
 
   .button {
@@ -31,6 +42,20 @@
 
     &:active {
       transform: scale(.95);
+    }
+    
+    @media (max-width: 800px) {
+      width: 130px;
+      padding-top: .5rem;
+      padding-bottom: .5rem;
+      font-size: .7rem;
+    }
+
+    @media (max-width: 500px) {
+      width: 130px;
+      padding-top: .5rem;
+      padding-bottom: .5rem;
+      font-size: .7rem;
     }
   }
 }

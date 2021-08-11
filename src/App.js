@@ -36,10 +36,12 @@ class App extends Component {
     return (
       <div className="App">
         <h1 className="title">VISUAL SORTING</h1>
-        <BubbleSort/>
-        <InsertionSort />
-        <SelectionSort />
-        <QuickSort />
+        <div className="buttons-container">
+          <BubbleSort/>
+          <InsertionSort />
+          <SelectionSort />
+          <QuickSort />
+        </div>
         <Graph />
         {
           sortRunning ? <button className="button stop" onClick={this.stopSorting}>STOP</button>
