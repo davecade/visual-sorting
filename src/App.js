@@ -24,6 +24,11 @@ class App extends Component {
     }
   }
 
+  componentDidMount() {
+    const { generateGraph } = this.props
+    generateGraph()
+  }
+
   stopSorting = () => {
     this.props.stopSorting(true)
     this.setState({speed: 50})
