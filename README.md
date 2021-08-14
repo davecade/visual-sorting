@@ -1,6 +1,6 @@
 # Visual Sorting
 
-This is a web application that displays visually how various sorting aglorithms sort an array
+Simple app created using ReactJS that displays how different sorting algorithms sort data in their own unique ways. Currently displays 4 types of sorting algoritms: Bubble, Insertion, Selection, and Quick. Libraries include Redux for state management.
 
 ## Screenshots
 <img src="gh-screenshots/s1.PNG" width="500">
