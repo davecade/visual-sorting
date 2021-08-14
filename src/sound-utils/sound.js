@@ -5,7 +5,7 @@ export const sound = {
 
 
 export const playSortingSound = () => {
-    sound.sorting.volume = 0.4
+    sound.sorting.volume = 0.3
     sound.finished.pause()
     sound.finished.currentTime = 0
     sound.sorting.play()
