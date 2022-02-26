@@ -14,7 +14,7 @@ class QuickSort extends Component {
     constructor(props) {
       super(props)
       this.state = {
-        speed: 30
+        speed: 1
       }
     }
 

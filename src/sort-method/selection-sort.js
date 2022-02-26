@@ -13,7 +13,7 @@ class SelectionSort extends Component {
     constructor(props) {
       super(props)
       this.state = {
-        speed: 50
+        speed: 1
       }
     }
 
