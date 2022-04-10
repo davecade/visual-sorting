@@ -23,7 +23,7 @@ const BubbleSort = ({
     toggleSortRunning,
     stopSorting,
 }) => {
-    const [speed] = useState(1);
+    const [speed] = useState(0);
     const setClicked = useState(false)[1];
 
     useEffect(() => {

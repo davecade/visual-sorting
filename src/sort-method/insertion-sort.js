@@ -17,7 +17,7 @@ class InsertionSort extends Component {
     constructor() {
         super();
         this.state = {
-            speed: 1,
+            speed: 0,
         };
     }
 
